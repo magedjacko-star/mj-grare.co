@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MJ Albums</title>
+
+  <style>
+    body{
+      margin:0;
+      padding:20px;
+      background:#000;
+      color:#fff;
+      font-family: Arial, sans-serif;
+      text-align:center;
+    }
+
+    h1{
+      color:#e50914;
+      margin:20px 0 18px;
+      font-size:38px;
+      text-shadow:0 0 10px rgba(255,0,0,.55);
+    }
+
+    .albums{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .card{
+      position:relative;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      overflow:hidden;
+      text-decoration:none;
+      color:#fff;
+      transition:.2s;
+      box-shadow:0 0 18px rgba(255,255,255,.08);
+      display:block;
+    }
+    .card:hover{
+      transform:scale(1.02);
+      box-shadow:0 0 22px rgba(229,9,20,.35);
+      border-color:rgba(229,9,20,.35);
+    }
+
+    .cover{
+      width:100%;
+      aspect-ratio: 1/1;
+      object-fit:cover;
+      display:block;
+      background:#111;
+    }
+
+    .name{
+      padding:12px 10px;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:22px;
+      padding:12px 22px;
+      border-radius:10px;
+      background:#e50914;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+    }
+    .back:hover{ background:#b20710; }
+
+    /* ===== Admin Bar ===== */
+    #adminBar{
+      position:fixed;
+      bottom:24px;
+      right:24px;
+      display:none;
+      gap:10px;
+      z-index:1000;
+    }
+    .adminBtn{
+      background:#e50914;
+      color:#fff;
+      border:none;
+      padding:14px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 0 18px rgba(229,9,20,.6);
+    }
+    .adminBtn.secondary{
+      background:#333;
+      box-shadow:0 0 12px rgba(255,255,255,.12);
+    }
+    .adminBtn:hover{ filter:brightness(0.95); }
+
+    /* Delete badge on cards (visible only in admin mode) */
+    .delBadge{
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:rgba(229,9,20,.95);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      padding:8px 10px;
+      font-weight:700;
+      cursor:pointer;
+      display:none;
+      z-index:5;
+      box-shadow:0 0 14px rgba(229,9,20,.55);
+    }
+    body.admin .delBadge{ display:block; }
+
+    /* ===== Upload Modal ===== */
+    #uploadModal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.85);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+      padding:18px;
+    }
+
+    .modal-box{
+      background:#111;
+      padding:22px;
+      border-radius:14px;
+      width:min(360px, 92vw);
+      text-align:center;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 0 22px rgba(255,255,255,.10);
+    }
+
+    .modal-box h2{
+      margin:0 0 10px;
+      color:#fff;
+    }
+
+    .modal-box input{
+      width:100%;
+      margin:8px 0;
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      outline:none;
+    }
+
+    .modal-box button{
+      width:100%;
+      padding:10px;
+      margin-top:8px;
+      border:none;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .modal-box .save{
+      background:#e50914;
+      color:#fff;
+    }
+
+    .modal-box .cancel{
+      background:#444;
+      color:#fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Michael Jackson Albums</h1>
+
+  <div class="albums">
+
+    <!-- Static albums (we will allow hiding/deleting them too) -->
+    <a class="card" data-static="1" href="Off%20The%20Wall/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Off%20The%20Wall/cover.jpg" alt="Off The Wall">
+      <div class="name">Off The Wall</div>
+    </a>
+
+    <a class="card" data-static="1" href="Thriller/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Thriller/cover.jpg" alt="Thriller">
+      <div class="name">Thriller</div>
+    </a>
+
+    <a class="card" data-static="1" href="Bad/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Bad/cover.jpg" alt="Bad">
+      <div class="name">Bad</div>
+    </a>
+
+    <a class="card" data-static="1" href="Dangerous/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Dangerous/cover.jpg" alt="Dangerous">
+      <div class="name">Dangerous</div>
+    </a>
+
+    <a class="card" data-static="1" href="History/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="History/cover.jpg" alt="HIStory">
+      <div class="name">HIStory</div>
+    </a>
+
+    <a class="card" data-static="1" href="Blood%20On%20The%20Dance%20Floor/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Blood%20On%20The%20Dance%20Floor/cover.jpg" alt="Blood On The Dance Floor">
+      <div class="name">Blood On The Dance Floor</div>
+    </a>
+
+     <a class="card" data-static="1" href="Invincible/index.html">
+  <button class="delBadge" type="button">🗑️ Delete</button>
+  <img class="cover" src="Invincible/cover.jpg" alt="Invincible">
+  <div class="name">Invincible (2001)</div>
+     </a>
+
+
+    <a class="card" data-static="1" href="This%20Is%20It/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="This%20Is%20It/cover.jpg" alt="This Is It">
+      <div class="name">This Is It</div>
+    </a>
+
+    <a class="card" data-static="1" href="Micheal2010/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Micheal2010/cover.jpg" alt="Michael (2010)">
+      <div class="name">Michael (2010)</div>
+    </a>
+
+    <a class="card" data-static="1" href="Xscape/index.html">
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <img class="cover" src="Xscape/cover.jpg" alt="Xscape">
+      <div class="name">Xscape</div>
+    </a>
+
+  </div>
+
+  <a class="back" href="index.html">🏠 Back to Home</a>
+
+  <!-- Admin Bar -->
+  <div id="adminBar">
+    <button id="uploadBtn" class="adminBtn" type="button">➕ Upload</button>
+    <button id="exitAdminBtn" class="adminBtn secondary" type="button">✖ Exit</button>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal">
+    <div class="modal-box">
+      <h2>Upload New Album</h2>
+
+      <input id="albumName" type="text" placeholder="Album Name" />
+      <input id="albumCover" type="file" accept="image/*" />
+      <input id="albumFolder" type="file" webkitdirectory multiple />
+
+      <button class="save" onclick="saveAlbum()">Save Album</button>
+      <button class="cancel" onclick="closeUpload()">Cancel</button>
+    </div>
+  </div>
+
+<script>
+  const albumsDiv = document.querySelector('.albums');
+  const adminBar = document.getElementById('adminBar');
+  const uploadModal = document.getElementById('uploadModal');
+
+  const LS_ALBUMS = 'mj_albums';
+  const LS_HIDDEN_STATIC = 'mj_hidden_static';
+
+  function getAlbums(){
+    return JSON.parse(localStorage.getItem(LS_ALBUMS) || '[]');
+  }
+  function setAlbums(arr){
+    localStorage.setItem(LS_ALBUMS, JSON.stringify(arr));
+  }
+
+  function getHiddenStatic(){
+    return JSON.parse(localStorage.getItem(LS_HIDDEN_STATIC) || '[]');
+  }
+  function setHiddenStatic(arr){
+    localStorage.setItem(LS_HIDDEN_STATIC, JSON.stringify(arr));
+  }
+
+  function enableAdmin(){
+    document.body.classList.add('admin');
+    adminBar.style.display = 'flex';
+    localStorage.setItem('mj_admin', '1');
+  }
+  function disableAdmin(){
+    document.body.classList.remove('admin');
+    adminBar.style.display = 'none';
+    localStorage.setItem('mj_admin', '0');
+    closeUpload();
+  }
+
+  // Ctrl + Shift + M => Toggle admin
+  document.addEventListener('keydown', (e)=>{
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='m'){
+      const on = localStorage.getItem('mj_admin') === '1';
+      if(on) disableAdmin(); else enableAdmin();
+      alert(on ? 'Admin Mode Disabled' : 'Admin Mode Enabled');
+    }
+  });
+
+  // keep admin state if refreshed
+  if(localStorage.getItem('mj_admin') === '1'){
+    enableAdmin();
+  }
+
+  document.getElementById('exitAdminBtn').onclick = disableAdmin;
+
+  // Upload open
+  document.getElementById('uploadBtn').onclick = ()=>{
+    uploadModal.style.display='flex';
+  };
+
+  function closeUpload(){
+    uploadModal.style.display='none';
+  }
+
+  // Save Album (dynamic)
+  function saveAlbum(){
+    const name = document.getElementById('albumName').value.trim();
+    const coverFile = document.getElementById('albumCover').files[0];
+    const folderFiles = document.getElementById('albumFolder').files;
+
+    if(!name || !coverFile || folderFiles.length===0){
+      alert('Complete all fields');
+      return;
+    }
+
+    const folderName = folderFiles[0].webkitRelativePath.split('/')[0];
+
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const album = {
+        id: 'a_' + Date.now(),
+        name,
+        cover: reader.result,   // base64
+        folder: folderName      // folder/index.html
+      };
+
+      const albums = getAlbums();
+      albums.push(album);
+      setAlbums(albums);
+
+      renderDynamicAlbum(album);
+      closeUpload();
+
+      // reset inputs
+      document.getElementById('albumName').value = '';
+      document.getElementById('albumCover').value = '';
+      document.getElementById('albumFolder').value = '';
+    };
+    reader.readAsDataURL(coverFile);
+  }
+
+  // Render dynamic album card
+  function renderDynamicAlbum(a){
+    const card = document.createElement('a');
+    card.className = 'card';
+    card.href = encodeURIComponent(a.folder) + '/index.html';
+    card.dataset.dynamic = '1';
+    card.dataset.albumId = a.id;
+
+    const del = document.createElement('button');
+    del.className = 'delBadge';
+    del.type = 'button';
+    del.textContent = '🗑️ Delete';
+    del.addEventListener('click', (ev)=>{
+      ev.preventDefault();
+      ev.stopPropagation();
+      deleteDynamicAlbum(a.id, card);
+    });
+
+    card.appendChild(del);
+
+    const img = document.createElement('img');
+    img.className = 'cover';
+    img.src = a.cover;
+    img.alt = a.name;
+    card.appendChild(img);
+
+    const nm = document.createElement('div');
+    nm.className = 'name';
+    nm.textContent = a.name;
+    card.appendChild(nm);
+
+    albumsDiv.appendChild(card);
+  }
+
+  function deleteDynamicAlbum(id, cardEl){
+    if(!confirm('Delete this album?')) return;
+
+    const albums = getAlbums().filter(x => x.id !== id);
+    setAlbums(albums);
+
+    cardEl.remove();
+  }
+
+  // Delete/hide static album cards (persist by href)
+  function wireStaticDeletes(){
+    const hidden = new Set(getHiddenStatic());
+
+    document.querySelectorAll('.card[data-static="1"]').forEach(card=>{
+      const href = card.getAttribute('href');
+      if(hidden.has(href)){
+        card.remove(); // hidden previously
+        return;
+      }
+
+      const btn = card.querySelector('.delBadge');
+      if(!btn) return;
+
+      btn.addEventListener('click', (ev)=>{
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if(!confirm('Hide/Delete this static album from the page?')) return;
+        const arr = getHiddenStatic();
+        arr.push(href);
+        setHiddenStatic(arr);
+        card.remove();
+      });
+    });
+  }
+
+  // Load saved albums from localStorage
+  getAlbums().forEach(renderDynamicAlbum);
+
+  // Wire static delete buttons + apply hidden list
+  wireStaticDeletes();
+</script>
+
+</body>
+</html>
