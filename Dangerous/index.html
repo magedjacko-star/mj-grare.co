@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Michael Jackson - Dangerous</title>
+
+<style>
+  body{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    padding:20px;
+    margin:0;
+  }
+  h1{
+    color:#e50914;
+    font-size:38px;
+    margin-bottom:25px;
+  }
+  .gallery{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+  }
+  .gallery img{
+    width:100%;
+    border-radius:12px;
+    box-shadow:0 0 18px rgba(255,255,255,.15);
+    display:block;
+    cursor:zoom-in;
+    transition:.25s;
+    background:#111;
+  }
+  .gallery img:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 35px rgba(229,9,20,.5);
+  }
+
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.95);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  }
+  .lightbox.open{ display:flex; }
+
+  .lightbox img{
+    max-width:92%;
+    max-height:92%;
+    border-radius:14px;
+    box-shadow:0 0 55px rgba(229,9,20,.6);
+    animation:zoom .25s ease;
+  }
+
+  @keyframes zoom{
+    from{ transform:scale(.85); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+
+  .close{
+    position:absolute;
+    top:22px;
+    right:28px;
+    font-size:34px;
+    cursor:pointer;
+    color:#fff;
+    font-weight:bold;
+  }
+
+  .footer{
+    margin-top:45px;
+    padding:25px 10px;
+    background:#1a1a1a;
+    border-top:1px solid #333;
+  }
+  .footer a{
+    display:inline-block;
+    margin:8px;
+    padding:12px 26px;
+    background:#2e2e2e;
+    color:#fff;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+    transition:.3s;
+  }
+  .footer a:hover{
+    background:#e50914;
+    transform:scale(1.05);
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Dangerous — Michael Jackson</h1>
+
+<div class="gallery">
+  <img src="cover.jpg" alt="Dangerous Cover">
+  <img src="mj2000-1.jpg" alt="Dangerous 1">
+  <img src="mj2000-2.jpg" alt="Dangerous 2">
+  <img src="mj2000-3.jpg" alt="Dangerous 3">
+  <img src="mj2000-4.jpg" alt="Dangerous 4">
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="close" id="close">&times;</span>
+  <img id="lightbox-img" alt="">
+</div>
+
+<div class="footer">
+  <a href="../albums.html">⬅ Back to Albums</a>
+  <a href="../index.html">🏠 Back to Home</a>
+</div>
+
+<script>
+  const images = document.querySelectorAll('.gallery img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('close');
+
+  images.forEach(img=>{
+    img.addEventListener('click',()=>{
+      lightboxImg.src = img.src;
+      lightbox.classList.add('open');
+    });
+  });
+
+  closeBtn.onclick = ()=> lightbox.classList.remove('open');
+  lightbox.onclick = e => { if(e.target === lightbox) lightbox.classList.remove('open'); };
+
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape') lightbox.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
