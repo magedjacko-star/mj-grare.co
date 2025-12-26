@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MJ Albums</title>
+
+  <style>
+    :root{
+      --red:#e50914;
+      --bg:#000;
+      --panel:#0b0b0b;
+      --line:#1f1f1f;
+      --muted:#b3b3b3;
+    }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      padding:24px 18px 34px;
+      background:var(--bg);
+      color:#fff;
+      font-family: Arial, sans-serif;
+      text-align:center;
+    }
+
+    h1{
+      color:var(--red);
+      margin:12px 0 20px;
+      font-size:42px;
+      text-shadow:0 0 10px rgba(255,0,0,.55);
+    }
+
+    .albums{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .card{
+      position:relative;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      overflow:hidden;
+      text-decoration:none;
+      color:#fff;
+      transition:.2s;
+      box-shadow:0 0 18px rgba(255,255,255,.08);
+      display:block;
+    }
+    .card:hover{
+      transform:scale(1.02);
+      box-shadow:0 0 22px rgba(229,9,20,.35);
+      border-color:rgba(229,9,20,.35);
+    }
+
+    .cover{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      background:#111;
+    }
+
+    .name{
+      padding:12px 10px 14px;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .backHome{
+      display:inline-block;
+      margin-top:24px;
+      padding:12px 22px;
+      border-radius:12px;
+      background:#222;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .backHome:hover{ background:#e50914; border-color:#e50914; }
+  </style>
+</head>
+
+<body>
+
+  <h1>Michael Jackson Albums</h1>
+
+  <div class="albums">
+
+    <!-- IMPORTANT:
+      لازم أسماء الفولدرات والملفات تكون مطابقة بالظبط (حروف كبيرة/صغيرة + مسافات)
+    -->
+
+    <a class="card" href="Off%20The%20Wall/index.html">
+      <img class="cover" src="Off%20The%20Wall/cover.jpg" alt="Off The Wall">
+      <div class="name">Off The Wall</div>
+    </a>
+
+    <a class="card" href="Thriller/index.html">
+      <img class="cover" src="Thriller/cover.jpg" alt="Thriller">
+      <div class="name">Thriller</div>
+    </a>
+
+    <!-- لاحظ: فولدر bad عندك كان بحروف صغيرة قبل كده -->
+    <a class="card" href="bad/index.html">
+      <img class="cover" src="bad/cover.jpg" alt="Bad">
+      <div class="name">Bad</div>
+    </a>
+
+    <a class="card" href="Dangerous/index.html">
+      <img class="cover" src="Dangerous/cover.jpg" alt="Dangerous">
+      <div class="name">Dangerous</div>
+    </a>
+
+    <a class="card" href="History/index.html">
+      <img class="cover" src="History/cover.jpg" alt="HIStory">
+      <div class="name">HIStory</div>
+    </a>
+
+    <!-- ده كان عندك صح: Blood-On-The-Dance-Floor -->
+    <a class="card" href="Blood-On-The-Dance-Floor/index.html">
+      <img class="cover" src="Blood-On-The-Dance-Floor/cover.jpg" alt="Blood On The Dance Floor">
+      <div class="name">Blood On The Dance Floor</div>
+    </a>
+
+    <a class="card" href="Invincible/index.html">
+      <img class="cover" src="Invincible/cover.jpg" alt="Invincible">
+      <div class="name">Invincible (2001)</div>
+    </a>
+
+    <a class="card" href="This%20Is%20It/index.html">
+      <img class="cover" src="This%20Is%20It/cover.jpg" alt="This Is It">
+      <div class="name">This Is It</div>
+    </a>
+
+    <!-- نفس اسم الفولدر اللي عندك: Micheal2010 -->
+    <a class="card" href="Micheal2010/index.html">
+      <img class="cover" src="Micheal2010/cover.jpg" alt="Michael (2010)">
+      <div class="name">Michael (2010)</div>
+    </a>
+
+    <a class="card" href="Xscape/index.html">
+      <img class="cover" src="Xscape/cover.jpg" alt="Xscape">
+      <div class="name">Xscape</div>
+    </a>
+
+  </div>
+
+  <a class="backHome" href="index.html">🏠 Back to Home</a>
+
+</body>
+</html>
