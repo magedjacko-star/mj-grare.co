@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About | MJ&G</title>
+
+  <style>
+    :root{
+      --red:#e50914;
+      --bg:#000;
+      --text:#fff;
+      --muted:#b3b3b3;
+      --line:#1f1f1f;
+      --card: rgba(18,18,18,.72);
+    }
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; background:var(--bg); color:var(--text); font-family: Arial, sans-serif; }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-35%;
+      background:
+        radial-gradient(closest-side, rgba(229,9,20,.18), transparent 62%),
+        radial-gradient(closest-side, rgba(229,9,20,.10), transparent 62%);
+      filter: blur(34px);
+      opacity:.85;
+      animation: floatGlow 10s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:-2;
+    }
+    @keyframes floatGlow{
+      0% { transform: translate(-4%, -2%) scale(1); }
+      100%{ transform: translate(4%, 2%) scale(1.06); }
+    }
+
+    .wrap{ min-height:100vh; display:flex; }
+
+    .sidebar{
+      width:220px;
+      background:#000;
+      border-right:1px solid var(--line);
+      padding:40px 20px;
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+    .sidebar h2{ color:var(--red); margin:0 0 18px; font-size:26px; letter-spacing:.5px; }
+    .sidebar a{
+      display:block; color:var(--red); text-decoration:none; font-size:20px; margin:12px 0; transition:.2s;
+    }
+    .sidebar a:hover{ color:#fff; }
+    .submenu{ margin:6px 0 16px; padding:10px 0 0; border-top:1px solid rgba(255,255,255,.06); }
+    .submenu a{ font-size:16px; color:#aaa; margin:8px 0; }
+    .submenu a:hover{ color:#fff; }
+
+    .main{ flex:1; padding:22px 22px 14px; }
+    .topbar{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.5px; }
+    .brandDot{ width:10px; height:10px; border-radius:999px; background:var(--red); box-shadow:0 0 18px rgba(229,9,20,.6); }
+    .backBtn{
+      text-decoration:none; color:#fff; font-weight:900; padding:10px 14px; border-radius:12px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); transition:.2s; white-space:nowrap;
+    }
+    .backBtn:hover{ transform:translateY(-1px); border-color:rgba(229,9,20,.25); box-shadow:0 0 18px rgba(229,9,20,.18); }
+
+    .hero{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#000;
+      box-shadow:0 0 45px rgba(255,255,255,.10);
+      min-height:340px;
+    }
+    .hero img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:50% 20%;
+      filter: brightness(.95) contrast(1.05);
+      display:block;
+    }
+    .heroOverlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.52) 55%, rgba(0,0,0,.18) 100%),
+        linear-gradient(0deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 62%);
+      pointer-events:none;
+    }
+    .heroInner{
+      position:absolute; left:26px; right:26px; bottom:22px;
+      z-index:2; max-width:980px;
+    }
+    .pill{
+      display:inline-block; padding:7px 12px; border-radius:999px;
+      background:rgba(229,9,20,.12); border:1px solid rgba(229,9,20,.30);
+      color:#fff; font-weight:900; font-size:12px; letter-spacing:.6px;
+    }
+    .heroTitle{ margin:10px 0 6px; font-size:52px; line-height:1.05; font-weight:900; text-shadow:0 10px 24px rgba(0,0,0,.9); }
+    .heroDesc{ margin:0; max-width:860px; color:rgba(255,255,255,.92); font-size:16px; line-height:1.55; font-weight:800; text-shadow:0 8px 18px rgba(0,0,0,.9); }
+
+    .grid{ margin-top:16px; display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; }
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 0 22px rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+    .card h3{ margin:0 0 12px; font-size:18px; font-weight:900; }
+    .card p, .card li{ color:rgba(255,255,255,.86); line-height:1.6; font-size:14px; }
+
+    .offerList{ margin:0; padding-left:0; display:grid; gap:8px; list-style:none; }
+    .offerList li{ padding-left:14px; position:relative; }
+    .offerList li::before{
+      content:""; position:absolute; left:0; top:10px;
+      width:6px; height:6px; border-radius:999px;
+      background:var(--red); box-shadow:0 0 10px rgba(229,9,20,.6);
+    }
+
+    .contactRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .cbtn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:12px;
+      text-decoration:none; font-weight:900; color:#fff;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      transition:.2s; font-size:13px;
+    }
+    .cbtn:hover{ transform:translateY(-1px); border-color:rgba(229,9,20,.25); box-shadow:0 0 18px rgba(229,9,20,.18); }
+    .cbtn.whatsapp{ background:#25D366; border-color:transparent; color:#001b08; }
+
+    .footer{
+      margin-top:14px; padding:10px 12px; color:rgba(255,255,255,.55); font-size:12px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+
+    @media (max-width: 900px){
+      .wrap{ flex-direction:column; }
+      .sidebar{ position:static; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--line); }
+      .grid{ grid-template-columns: 1fr; }
+      .heroTitle{ font-size:40px; }
+      .main{ padding:18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+
+      <div class="submenu">
+        <a href="albums.html">Photo Albums</a>
+        <a href="MusicVideos/index.html">Music Videos</a>
+        <a href="Concerts/index.html">Concerts</a>
+        <a href="Movies/index.html">Movies</a>
+        <a href="Interviews/index.html">Interviews</a>
+      </div>
+
+      <a href="news.html">News</a>
+      <a href="about.html">About</a>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="brand">
+          <span style="font-size:20px;">MJ&amp;G</span>
+          <span class="brandDot"></span>
+        </div>
+        <a class="backBtn" href="index.html">Back to Home ←</a>
+      </div>
+
+      <section class="hero">
+        <!-- لازم الملف ده موجود جنب about.html -->
+        <img src="About-hero.jpg" alt="Michael Jackson">
+        <div class="heroOverlay"></div>
+
+        <div class="heroInner">
+          <span class="pill">ABOUT</span>
+          <h1 class="heroTitle">About Us</h1>
+          <p class="heroDesc">
+            We design awesome websites at the lowest prices with pro quality!<br>
+            This site is for all Michael Jackson fans — music, videos, concerts, movies, interviews, and news in one place.
+          </p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h3>What We Offer</h3>
+          <ul class="offerList">
+            <li>Music videos &amp; songs</li>
+            <li>Concerts &amp; live shows</li>
+            <li>Movies &amp; artistic works</li>
+            <li>Interviews &amp; TV appearances</li>
+            <li>Latest news &amp; updates</li>
+          </ul>
+
+          <h3 style="margin-top:16px;">Michael Jackson Biography</h3>
+          <p>
+            Michael Joseph Jackson (1958 – 2009), the King of Pop, started with The Jackson 5
+            and became a solo legend with hits like <b>Thriller</b>. Famous for the Moonwalk, his music inspires millions worldwide.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Contact Me</h3>
+          <p style="margin-top:0;">Want a website? Let’s make it happen!</p>
+
+          <p>
+            Name: <b>Maged Ali Hussein</b><br><br>
+            Phone / WhatsApp:
+            <a href="https://wa.me/201018998174" target="_blank" rel="noopener">+201018998174</a><br><br>
+            Email:
+            <a href="mailto:magedali1985@outlook.com">magedali1985@outlook.com</a>
+          </p>
+
+          <div class="contactRow">
+            <a class="cbtn whatsapp" href="https://wa.me/201018998174" target="_blank" rel="noopener">🟢 WhatsApp</a>
+            <a class="cbtn" href="tel:+201018998174">📞 Call</a>
+            <a class="cbtn" href="mailto:magedali1985@outlook.com">✉️ Email</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© MJ&amp;G — All rights reserved</span>
+        <span>Designed by Maged Ali Hussein</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
