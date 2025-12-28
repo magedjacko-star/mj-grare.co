@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thriller (1982) – Michael Jackson</title>
+
+<style>
+  :root{
+    --red:#e50914;
+    --bg:#000;
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:#fff;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    padding:28px;
+  }
+
+  h1{
+    color:var(--red);
+    font-size:42px;
+    margin:0 0 6px;
+    text-shadow:0 0 12px rgba(229,9,20,.6);
+  }
+
+  .sub{
+    opacity:.75;
+    margin-bottom:28px;
+  }
+
+  /* ===== Cover ===== */
+  .cover{
+    max-width:320px;
+    width:90%;
+    border-radius:18px;
+    box-shadow:0 0 40px rgba(255,255,255,.18);
+    margin:0 auto 34px;
+    display:block;
+  }
+
+  /* ===== Gallery ===== */
+  .gallery{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:18px;
+  }
+
+  .gallery img{
+    width:100%;
+    border-radius:16px;
+    cursor:zoom-in;
+    transition:.25s;
+    box-shadow:0 0 18px rgba(255,255,255,.12);
+    display:block;
+  }
+
+  .gallery img:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 36px rgba(229,9,20,.55);
+  }
+
+  /* ===== Lightbox ===== */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.95);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    cursor:zoom-out;
+  }
+  .lightbox.open{ display:flex; }
+
+  .lightbox img{
+    max-width:92vw;
+    max-height:90vh;
+    border-radius:14px;
+    box-shadow:0 0 60px rgba(229,9,20,.6);
+    animation: zoomIn .25s ease;
+  }
+
+  @keyframes zoomIn{
+    from{ transform:scale(.9); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+
+  .hint{
+    position:fixed;
+    top:15px;
+    left:15px;
+    font-size:13px;
+    opacity:.7;
+    z-index:10000;
+    display:none;
+  }
+  .lightbox.open + .hint{ display:block; }
+
+  /* ===== Footer ===== */
+  .footer{
+    margin-top:48px;
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .footer a{
+    padding:12px 24px;
+    background:#222;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+    transition:.2s;
+  }
+  .footer a:hover{
+    background:var(--red);
+    transform:scale(1.05);
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Thriller (1982)</h1>
+<div class="sub">Michael Jackson • Studio Album</div>
+
+<!-- لازم cover.jpg تكون في نفس فولدر Thriller -->
+<img class="cover" src="./cover.jpg" alt="Thriller Cover">
+
+<div class="gallery">
+  <img src="./mj2000-1.jpg" alt="">
+  <img src="./mj2000-2.jpg" alt="">
+  <img src="./mj2000-3.jpg" alt="">
+  <img src="./mj2000-4.jpg" alt="">
+  <img src="./mj2000-5.jpg" alt="">
+</div>
+
+<div class="lightbox" id="lightbox">
+  <img id="lightImg" src="" alt="">
+</div>
+<div class="hint">Click anywhere or press ESC to close</div>
+
+<div class="footer">
+  <a href="../albums.html">⬅ Back to Albums</a>
+  <a href="../index.html">🏠 Back to Home</a>
+</div>
+
+<script>
+  const images = document.querySelectorAll(".gallery img");
+  const lightbox = document.getElementById("lightbox");
+  const lightImg = document.getElementById("lightImg");
+
+  images.forEach(img => {
+    img.addEventListener("click", () => {
+      lightImg.src = img.src;
+      lightbox.classList.add("open");
+    });
+  });
+
+  function closeLightbox(){
+    lightbox.classList.remove("open");
+    lightImg.src = "";
+  }
+
+  lightbox.addEventListener("click", closeLightbox);
+
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") closeLightbox();
+  });
+</script>
+
+</body>
+</html>
