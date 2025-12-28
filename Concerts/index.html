@@ -1,0 +1,61 @@
+<script>
+  const concerts = [
+    { title:"Dangerous Tour", url:"https://youtu.be/fKFX_iMFDiU", img:"dangerous-tour.jpg" },
+
+    /* مهم: اسم الملف لازم يطابق بالظبط الموجود في thumbs (كابيتال/سمول) */
+    { title:"Bad Tour", url:"https://youtu.be/U_q9TR8tj_g", img:"Bad-Tour.jpg" },
+
+    { title:"HIStory Tour", url:"https://youtu.be/SDDC-QdOR14", img:"history-tour.jpg" },
+    { title:"LIVE AT MSG, 2001 - 30th Anniversary Celebration", url:"https://youtu.be/vnIk5mGy9As", img:"LIVE-AT-MSG-2001-30th-Anniversary-Celebration.jpg" },
+    { title:"The Jacksons Victory Tour (Toronto)", url:"https://youtu.be/jaDEmw2ER0w", img:"The-Jacksons-Victory-Tour-Toronto-1984.jpg" },
+    { title:"Michael Jackson – This Is It", url:"https://ww4.tinyzone.org/movie/michael-jacksons-this-is-it-9870/", img:"Michael-Jackson-This-Is-It.jpg", meta:"Watch (TinyZone)" },
+    { title:"MTV Awards Performance (1995)", url:"https://youtu.be/TwsRaUh4N3c?si=feBMwxQOyDMlHNsP", img:"MTV-Awards-Performance-1995.jpg" },
+    { title:"Dangerous (2002)", url:"https://youtu.be/OfcQefxNdsw?si=sJSl4VmhBgv8RW1c", img:"Dangerous-2002.jpg" },
+    { title:"Dangerous (1999)", url:"https://youtu.be/FvBnkoms9hA?si=1ztzlK8WNwI_yVGl", img:"Dangerou-1999.jpg" },
+    { title:"The Jacksons - Destiny Tour (1979)", url:"https://youtu.be/Gx0-sRC4m7g?si=X90fuLuTxpS7MaNp", img:"The-Jacksons-1979-Destiny-Tour.jpg" },
+
+    /* ده عندك في الصورة فيه مسافات */
+    { title:"Michael Jackson - Motown 25", url:"https://youtu.be/BUcUS2cIieA?si=sHsq9hb2sdpcmwhH", img:"Michael-Jackson5 Motown -25.jpg" },
+
+    { title:"MJ & Friends - Live in Seoul (1999)", url:"https://youtu.be/V1IpXTwz1sE?si=wyUEF3VHhxZvuXFf", img:"Michael-Jackson-MJ-Friends,-Live-In-Seoul-1999.jpg" },
+    { title:"Live in Brunei Royal Concert (1996)", url:"https://youtu.be/q_37GxaANBc?si=xLPARLtc5LLSJ3dF", img:"Michael-Jackson-Live-in-Brunei-Royal-Concert,-1996.jpg" },
+    { title:"1993 Halftime Show", url:"https://youtu.be/q_37GxaANBc?si=xLPARLtc5LLSJ3dF", img:"1993-HALFTIME-SHOW-FULL-MICHAEL-JACKSON.jpg" },
+    { title:"Earth Song - TV Show (Nov 1995)", url:"https://youtu.be/g1acN5_y21o?si=TM0wjyaZxhiDLgfV", img:"Michael-Jackson-Dangerous,-Earth-Song-TV-Show-November1995.jpg" },
+    { title:"HIStory Tour - Brunei (1996)", url:"https://youtu.be/pOLIlv92LdI?si=DXxojV4f8IGKjfmO", img:"Michael-Jackson-History-Tour-Brunei-1996.jpg" },
+
+    /* ده عندك فيه مسافة قبل/بعد - */
+    { title:"Anniversary (1991)", url:"https://youtu.be/fVpy2XYH5Pg?si=L0JSIKZSvLwZc5gJ", img:"Anniversary-1991 -Michael Jackson.jpg" }
+  ];
+
+  const grid = document.getElementById("grid");
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  // ✅ دي أهم حاجة ل GitHub: تشفير المسافات والكومّا
+  function fileUrl(name){
+    return encodeURI("thumbs/" + name);
+  }
+
+  concerts.forEach((c, i) => {
+    const meta = c.meta || "YouTube";
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.animationDelay = (0.04 + i*0.04) + "s";
+
+    card.innerHTML = `
+      <a href="${c.url}" target="_blank" rel="noopener">
+        <div class="thumb">
+          <img src="${fileUrl(c.img)}" alt="${escapeHtml(c.title)}" onerror="this.style.opacity=.2">
+          <div class="badge"><span class="dot"></span> Watch</div>
+        </div>
+        <div class="title">${escapeHtml(c.title)}</div>
+        <div class="meta">${escapeHtml(meta)}</div>
+      </a>
+    `;
+    grid.appendChild(card);
+  });
+</script>
