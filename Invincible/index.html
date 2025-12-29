@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Michael Jackson – Invincible (2001)</title>
+
+<style>
+  body{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    padding:20px;
+    margin:0;
+  }
+
+  h1{
+    color:#e50914;
+    font-size:38px;
+    margin-bottom:10px;
+    text-shadow:0 0 10px rgba(255,0,0,.55);
+  }
+
+  .sub{
+    color:#bbb;
+    margin-bottom:30px;
+    font-size:14px;
+    letter-spacing:1px;
+  }
+
+  .gallery{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:16px;
+  }
+
+  .gallery img{
+    width:100%;
+    border-radius:14px;
+    box-shadow:0 0 18px rgba(255,255,255,.15);
+    cursor:zoom-in;
+    transition:.25s;
+    background:#111;
+  }
+
+  .gallery img:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 35px rgba(229,9,20,.5);
+  }
+
+  /* ===== Lightbox ===== */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.95);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  }
+
+  .lightbox.open{ display:flex; }
+
+  .lightbox img{
+    max-width:92%;
+    max-height:92%;
+    border-radius:14px;
+    box-shadow:0 0 55px rgba(229,9,20,.6);
+    animation:zoom .25s ease;
+  }
+
+  @keyframes zoom{
+    from{ transform:scale(.85); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+
+  .close{
+    position:absolute;
+    top:20px;
+    right:26px;
+    font-size:34px;
+    cursor:pointer;
+    font-weight:bold;
+  }
+
+  .footer{
+    margin-top:45px;
+    padding:25px 10px;
+    background:#111;
+    border-top:1px solid #333;
+  }
+
+  .footer a{
+    display:inline-block;
+    margin:8px;
+    padding:12px 26px;
+    background:#2e2e2e;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+    transition:.3s;
+  }
+
+  .footer a:hover{
+    background:#e50914;
+    transform:scale(1.05);
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Invincible</h1>
+<div class="sub">Michael Jackson • 2001</div>
+
+<div class="gallery">
+  <img src="cover.jpg" alt="Invincible Cover">
+  <img src="inv-1.jpg" alt="">
+  <img src="inv-2.jpg" alt="">
+  <img src="inv-3.jpg" alt="">
+  <img src="inv-4.jpg" alt="">
+  <img src="inv-5.jpg" alt="">
+  <img src="inv-6.jpg" alt="">
+  <img src="inv-7.jpg" alt="">
+  <img src="inv-8.jpg" alt="">
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="close" id="close">&times;</span>
+  <img id="lightbox-img">
+</div>
+
+<div class="footer">
+  <a href="../albums.html">⬅ Back to Albums</a>
+  <a href="../index.html">🏠 Back to Home</a>
+</div>
+
+<script>
+  const imgs = document.querySelectorAll('.gallery img');
+  const box = document.getElementById('lightbox');
+  const boxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('close');
+
+  imgs.forEach(img=>{
+    img.addEventListener('click',()=>{
+      boxImg.src = img.src;
+      box.classList.add('open');
+    });
+  });
+
+  closeBtn.onclick = ()=> box.classList.remove('open');
+  box.onclick = e => { if(e.target === box) box.classList.remove('open'); };
+
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape') box.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
