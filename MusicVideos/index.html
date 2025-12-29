@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music Videos | MJ&G</title>
+
+  <style>
+    :root{
+      --red:#e50914;
+      --bg:#000;
+      --panel:#0b0b0b;
+      --line:#1f1f1f;
+      --muted:#b3b3b3;
+      --card: rgba(18,18,18,.72);
+    }
+    *{ box-sizing:border-box; }
+    html, body{
+      margin:0;
+      background:var(--bg);
+      color:#fff;
+      font-family: Arial, sans-serif;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-35%;
+      background:
+        radial-gradient(closest-side, rgba(229,9,20,.18), transparent 62%),
+        radial-gradient(closest-side, rgba(229,9,20,.10), transparent 62%);
+      filter: blur(34px);
+      opacity:.85;
+      animation: floatGlow 10s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:-2;
+    }
+    @keyframes floatGlow{
+      0% { transform: translate(-4%, -2%) scale(1); }
+      100%{ transform: translate(4%, 2%) scale(1.06); }
+    }
+
+    .main{ padding:22px 22px 14px; max-width:1200px; margin:0 auto; }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .brandDot{
+      width:10px; height:10px;
+      border-radius:999px;
+      background:var(--red);
+      box-shadow:0 0 18px rgba(229,9,20,.6);
+    }
+
+    .backBtn{
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      padding:10px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .backBtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(229,9,20,.25);
+      box-shadow:0 0 18px rgba(229,9,20,.18);
+    }
+
+    h1{
+      margin:8px 0 10px;
+      font-size:42px;
+      color:#fff;
+      font-weight:900;
+    }
+    .sub{
+      margin:0 0 16px;
+      color:rgba(255,255,255,.80);
+      font-weight:700;
+    }
+
+    .searchRow{
+      margin:12px 0 16px;
+      display:flex;
+      justify-content:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .search{
+      width:min(560px, 100%);
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      outline:none;
+      font-size:15px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap:16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 0 22px rgba(255,255,255,.06);
+      transition:.2s;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color:rgba(229,9,20,.22);
+      box-shadow:0 0 26px rgba(229,9,20,.12);
+    }
+
+    .thumbLink{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .card img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
+
+    .title{
+      padding:12px 12px 0;
+      font-weight:900;
+      color:#fff;
+      text-align:center;
+      font-size:15px;
+      line-height:1.35;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .actions{
+      padding:12px 12px 16px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:900;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      color:#fff;
+      transition:.2s;
+    }
+    .btn.primary{
+      background:rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.35);
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.25);
+    }
+
+    .footer{
+      margin-top:14px;
+      padding:10px 12px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 900px){
+      .main{ padding:18px; }
+      h1{ font-size:34px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="main">
+    <div class="topbar">
+      <div class="brand">
+        <span style="font-size:20px;">MJ&amp;G</span>
+        <span class="brandDot"></span>
+      </div>
+      <a class="backBtn" href="../index.html">🏠 Back to Home</a>
+    </div>
+
+    <h1>Michael Jackson Music Videos</h1>
+    <p class="sub">Search and open any video on YouTube.</p>
+
+    <div class="searchRow">
+      <input id="q" class="search" type="text" placeholder="Search videos..." />
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <footer class="footer">
+      <span>© MJ&amp;G — All rights reserved</span>
+      <span>Designed by Maged Ali Hussein</span>
+    </footer>
+  </main>
+
+  <script>
+    const videos = [
+      { title:"Don't Stop Til You Get Enough", id:"yURRmWtbTbo", img:"dont-stop-til-you-get-enough.jpg" },
+      { title:"Rock With You", id:"5X-Mrc2l1d0", img:"rock-with-you.jpg" },
+      { title:"She's Out of My Life", id:"6DQJPL9Yuq0", img:"shes-out-of-my-life.jpg" },
+      { title:"Thriller", id:"sOnqjkJTMaA", img:"thriller.jpg" },
+      { title:"Beat It", id:"oRdxUFDoQe0", img:"beat-it.jpg" },
+      { title:"Billie Jean", id:"Zi_XLOBDo_Y", img:"billie-jean.jpg" },
+      { title:"Bad", id:"dsUXAEzaC3Q", img:"bad.jpg" },
+      { title:"Dirty Diana", id:"yUi_S6YWjZw", img:"dirty-diana.jpg" },
+      { title:"Liberian Girl", id:"f3V-7DEAgdc", img:"liberian-girl.jpg" },
+      { title:"Man in the Mirror", id:"PivWY9wn5ps", img:"man-in-the-mirror.jpg" },
+      { title:"Smooth Criminal", id:"q8w1d01Y2vY", img:"smooth-criminal.jpg" },
+      { title:"Speed Demon", id:"l039y9FaIjc", img:"speed-demon.jpg" },
+      { title:"The Way You Make Me Feel", id:"HzZ_urpj4As", img:"the-way-you-make-me-feel.jpg" },
+      { title:"Black or White", id:"F2AitTPI5U0", img:"black-or-white.jpg" },
+      { title:"Give In to Me", id:"LJ7qXHjxj_0", img:"give-in-to-me.jpg" },
+      { title:"Gone Too Soon", id:"IcNamirwTaY", img:"gone-too-soon.jpg" },
+      { title:"Heal the World", id:"BWf-eARnf6U", img:"heal-the-world.png" },
+      { title:"In the Closet", id:"4qLY0vbrT8Q", img:"in-the-closet.jpg" },
+      { title:"Who Is It", id:"PfrV_6yWbEg", img:"who-is-it.jpg" },
+      { title:"Jam", id:"JbHI1yI1Ndk", img:"jam.jpg" },
+      { title:"Remember the Time", id:"LeiFF0gvqcc", img:"remember-the-time.jpg" },
+      { title:"Will You Be There", id:"jQY_QL_wvQU", img:"will-you-be-there.jpg" },
+      { title:"They Don't Care About Us", id:"QNJL6nfu__Q", img:"they-dont-care-about-us.jpg" },
+      { title:"They Don't Care About Us 2", id:"t1pqi8vjTLY", img:"they-dont-care-about-us2.jpg" },
+      { title:"Childhood", id:"puQEcN_iI9o", img:"childhood.jpg" },
+      { title:"Earth Song", id:"XAi3VTSdTxU", img:"earth-song.jpg" },
+      { title:"Scream", id:"0P4A1K4lXDo", img:"scream.jpg" },
+      { title:"Stranger in Moscow", id:"pEEMi2j6lYE", img:"stranger-in-moscow.jpg" },
+      { title:"You Are Not Alone", id:"pAyKJAtDNCw", img:"you-are-not-alone.jpg" },
+      { title:"Blood on the Dance Floor", id:"c3_NntYhzV4", img:"blood-on-the-dance-floor.jpg" },
+      { title:"Ghosts", id:"Xh9Cp4rd7mI", img:"ghosts.jpg" },
+      { title:"You Rock My World", id:"g4tpuu-Up90", img:"you-rock-my-world.jpg" },
+      { title:"Cry", id:"mj3MfUR35CM", img:"cry.jpg" },
+      { title:"One More Chance", id:"-owpIWQMd80", img:"one-more-chance.jpg" }
+    ];
+
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+
+    function render(list){
+      grid.innerHTML = "";
+      list.forEach(v => {
+        const youtube = `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <a class="thumbLink" href="${youtube}" target="_blank" rel="noopener">
+            <img src="thumbs/${v.img}" alt="${v.title}">
+            <div class="title">${v.title}</div>
+          </a>
+          <div class="actions">
+            <a class="btn primary" href="${youtube}" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    render(videos);
+
+    q.addEventListener("input", () => {
+      const term = q.value.trim().toLowerCase();
+      const filtered = videos.filter(v => v.title.toLowerCase().includes(term));
+      render(filtered);
+    });
+  </script>
+</body>
+</html>
