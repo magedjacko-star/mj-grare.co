@@ -3,381 +3,389 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MJ&G | Michael Jackson Gallery</title>
+  <title>Interviews | Michael Jackson</title>
 
   <style>
     :root{
       --red:#e50914;
       --bg:#000;
-      --text:#fff;
+      --panel:#0b0b0b;
+      --panel2:#111;
+      --line:#1f1f1f;
       --muted:#b3b3b3;
-      --line:#222;
+      --sideW: 250px;
     }
 
     *{ box-sizing:border-box; }
 
-    html, body{
-      height:100%;
+    body{
       margin:0;
       background:var(--bg);
-      color:var(--text);
+      color:#fff;
       font-family: Arial, sans-serif;
-      overflow:hidden;
     }
+
+    .layout{ display:flex; min-height:100vh; }
 
     .sidebar{
-      position:fixed;
-      left:0; top:0;
-      width:220px;
+      width:var(--sideW);
+      background:#070707;
+      border-right:1px solid rgba(255,255,255,.08);
+      padding:18px 14px;
+      position:sticky;
+      top:0;
       height:100vh;
-      background:#000;
-      padding:36px 18px;
-      border-right:1px solid var(--line);
-      z-index:5;
-    }
-
-    .sidebar h2{
-      color:var(--red);
-      margin:0 0 18px;
-      font-size:26px;
-      letter-spacing:.5px;
     }
 
     .sidebar a{
       display:block;
-      color:var(--red);
+      padding:12px 12px;
+      border-radius:10px;
+      color:#fff;
       text-decoration:none;
-      font-size:20px;
-      margin:12px 0;
+      font-weight:700;
+      opacity:.9;
       transition:.2s;
     }
-    .sidebar a:hover{ color:#fff; }
+    .sidebar a:hover{
+      background:rgba(229,9,20,.18);
+      transform:translateX(2px);
+      opacity:1;
+    }
 
     .submenu{
-      margin:6px 0 16px;
-      padding:10px 0 0;
-      border-top:1px solid rgba(255,255,255,.06);
+      margin:10px 0 14px;
+      padding:10px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
     }
-    .submenu a{
-      font-size:16px;
-      color:#aaa;
-      margin:8px 0;
-    }
-    .submenu a:hover{ color:#fff; }
+    .submenu a{ padding:10px 10px; border-radius:10px; font-weight:700; }
 
-    .main{
-      margin-left:240px;
-      height:100vh;
-      padding:18px 20px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+    .sidebar a.active{
+      background:rgba(229,9,20,.28);
+      border:1px solid rgba(229,9,20,.35);
     }
 
-    .logo{
+    .content{ flex:1; padding:26px; }
+
+    .header{
+      max-width:1200px;
+      margin:0 auto 18px;
       text-align:center;
-      flex:0 0 auto;
-      animation: fadeDown .55s ease both;
     }
-    .logo img{
-      width:110px;
-      border-radius:10px;
-      box-shadow:0 0 25px rgba(229,9,20,.7);
-    }
-
-    .hero{
-      flex:1 1 auto;
-      max-width:1000px;
-      width:100%;
-      margin:0 auto;
-      position:relative;
-      border-radius:16px;
-      overflow:hidden;
-      background:#111;
-      box-shadow:0 0 45px rgba(255,255,255,.14);
-      animation: fadeUp .6s ease .05s both;
-    }
-
-    .hero img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter: brightness(1.18) contrast(1.08) saturate(1.06);
-      transform: translateZ(0);
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.28) 55%, rgba(0,0,0,.05) 100%);
-      pointer-events:none;
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(0deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,0) 62%);
-      pointer-events:none;
-    }
-
-    .heroContent{
-      position:absolute;
-      left:22px;
-      right:22px;
-      bottom:18px;
-      z-index:2;
-      max-width:930px;
-    }
-
-    .heroTitle{
-      margin:0 0 8px;
+    h1{
+      color:var(--red);
+      margin:8px 0 6px;
       font-size:42px;
-      font-weight:900;
       letter-spacing:.5px;
-      text-shadow:0 10px 22px rgba(0,0,0,.85);
+    }
+    .sub{
+      color:var(--muted);
+      margin:0 0 14px;
+      font-size:14px;
     }
 
-    .heroDesc{
-      margin:0 0 12px;
-      color:rgba(255,255,255,.94);
-      line-height:1.55;
-      font-size:17px;
-      font-weight:800;
-      text-shadow: 0 10px 22px rgba(0,0,0,.92), 0 2px 6px rgba(0,0,0,.85);
-    }
-
-    .ctaRow{
+    .topbar{
+      max-width:1200px;
+      margin:0 auto 18px;
       display:flex;
       gap:12px;
+      align-items:center;
+      justify-content:center;
       flex-wrap:wrap;
-      align-items:center;
-      margin-bottom:12px;
     }
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 18px;
-      border-radius:6px;
-      font-weight:900;
-      text-decoration:none;
-      border:1px solid transparent;
-      transition:.2s;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .btnPlay{ background:#fff; color:#000; }
-    .btnPlay:hover{ background:#e6e6e6; transform:scale(1.02); }
-
-    .btnInfo{
-      background:rgba(109,109,110,.70);
-      color:#fff;
-      border-color:rgba(255,255,255,.08);
-      backdrop-filter: blur(2px);
-    }
-    .btnInfo:hover{ background:rgba(109,109,110,.90); transform:scale(1.02); }
-
-    .contactBox{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:wrap;
-      padding:12px;
-      border-radius:14px;
-      background:rgba(0,0,0,.32);
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 0 18px rgba(255,255,255,.06);
-      max-width:930px;
-    }
-
-    .qrImage{
-      width:104px;
-      height:104px;
-      background:#fff;
+    .search{
+      width:min(560px, 92vw);
+      padding:12px 14px;
       border-radius:12px;
-      padding:6px;
-      flex:0 0 auto;
-      display:block;
-      overflow:hidden;
-    }
-    .qrImage img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-    }
-
-    .contactInfo{
-      flex:1;
-      min-width:260px;
-      text-align:left;
-    }
-
-    .contactTitle{
-      font-size:16px;
-      font-weight:900;
-      margin:0 0 6px;
-    }
-
-    .contactText{
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.45;
-      margin:0 0 10px;
-    }
-
-    .contactText a{
-      font-size:15px;
-      font-weight:900;
+      border:1px solid #2a2a2a;
+      background:#0b0b0b;
       color:#fff;
+      outline:none;
+      font-size:15px;
+    }
+
+    .grid{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap:18px;
+    }
+
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel2), var(--panel));
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 0 18px rgba(255,255,255,.06);
+
+      transform:translateY(10px);
+      opacity:0;
+      animation:fadeUp .55s ease forwards;
+    }
+    @keyframes fadeUp{ to { opacity:1; transform:translateY(0); } }
+
+    .card a{
       text-decoration:none;
-    }
-    .contactText a:hover{ text-decoration:underline; }
-
-    .contactActions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
+      color:inherit;
+      display:block;
     }
 
-    .contactBtn{
+    .thumb{ position:relative; overflow:hidden; background:#000; }
+    .thumb img{
+      width:100%;
+      height:165px;
+      object-fit:cover;
+      display:block;
+      transform:scale(1);
+      transition:transform .25s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-4px) scale(1.03);
+      box-shadow:0 0 45px rgba(229,9,20,.35);
+      border-color:rgba(229,9,20,.35);
+    }
+    .card:hover .thumb img{ transform:scale(1.08); }
+
+    .badge{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:800;
+      background:rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(4px);
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:9px 12px;
-      border-radius:10px;
-      text-decoration:none;
+    }
+    .badge .dot{
+      width:10px; height:10px;
+      border-radius:50%;
+      background:var(--red);
+      box-shadow:0 0 14px rgba(229,9,20,.8);
+    }
+
+    .title{
+      padding:14px 14px 6px;
       font-weight:900;
-      color:#fff;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.15);
-      transition:.2s;
+      text-align:center;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+
+    .meta{
+      padding:0 14px 14px;
+      text-align:center;
+      color:var(--muted);
       font-size:13px;
-    }
-    .contactBtn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 0 14px rgba(229,9,20,.20);
-      border-color: rgba(229,9,20,.25);
-    }
-    .contactBtn.whatsapp{ background:#25D366; border-color:transparent; }
-    .contactBtn.email{ background:#444; }
-
-    .footer{
-      position:absolute;
-      left:240px;
-      right:0;
-      bottom:0;
-      padding:10px 18px;
-      font-size:12px;
-      color:#9a9a9a;
-      border-top:1px solid rgba(255,255,255,.06);
-      background:rgba(0,0,0,.35);
-      backdrop-filter: blur(6px);
+      line-height:1.4;
     }
 
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
-    @keyframes fadeDown{
-      from{ opacity:0; transform: translateY(-10px); }
-      to{ opacity:1; transform: translateY(0); }
+    .footerWrap{
+      max-width:1200px;
+      margin:44px auto 0;
+      padding:26px 0 10px;
+      background:linear-gradient(0deg,#000 65%, transparent);
+      text-align:center;
     }
 
-    @media (max-width: 780px){
-      html, body{ overflow:auto; }
-      .sidebar{
-        position:static;
-        width:100%;
-        height:auto;
-        border-right:none;
-        border-bottom:1px solid var(--line);
-      }
-      .main{
-        margin-left:0;
-        height:auto;
-        padding:18px 14px;
-      }
-      .hero{ height:70vh; }
-      .heroContent{ text-align:center; }
-      .ctaRow{ justify-content:center; }
-      .contactInfo{ text-align:center; }
-      .contactBox{ justify-content:center; }
-      .contactActions{ justify-content:center; }
-      .footer{ position:static; left:auto; right:auto; }
+    .backBtn{
+      display:inline-block;
+      padding:12px 20px;
+      border-radius:10px;
+      background:#2b2b2b;
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      transition:.2s;
+    }
+    .backBtn:hover{ background:var(--red); transform:scale(1.03); }
+
+    @media (max-width:900px){
+      .sidebar{ display:none; }
+      .content{ padding:18px; }
+    }
+    @media (max-width:520px){
+      h1{ font-size:34px; }
+      .thumb img{ height:155px; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="sidebar">
-    <h2>Home</h2>
+<div class="layout">
 
+  <!-- Sidebar -->
+  <aside class="sidebar">
     <div class="submenu">
-      <a href="albums.html">Photo Albums</a>
-
-      <!-- لازم نفس اسم الفولدر في GitHub بالظبط -->
-      <a href="musicvideos/index.html">Music Videos</a>
-      <a href="concerts/index.html">Concerts</a>
-      <a href="Movies/index.html">Movies</a>
-      <a href="interviews/index.html">Interviews</a>
+      <a href="../albums.html">Photo Albums</a>
+      <a href="../musicvideos/index.html">Music Videos</a>
+      <a href="../concerts/index.html">Concerts</a>
+      <a href="../movies/index.html">Movies</a>
+      <a href="./index.html" class="active">Interviews</a>
     </div>
 
-    <a href="news.html">News</a>
-    <a href="about.html">About</a>
-  </div>
+    <a href="../news.html">News</a>
+    <a href="../about.html">About</a>
+  </aside>
 
-  <div class="main">
-    <div class="logo">
-      <img src="logo.png" alt="MJ Logo">
+  <!-- Main -->
+  <main class="content">
+    <div class="header">
+      <h1>Michael Jackson Interviews</h1>
+      <p class="sub">Click any poster to watch</p>
     </div>
 
-    <div class="hero">
-      <img src="hero.jpg" alt="Michael Jackson">
+    <div class="topbar">
+      <input id="q" class="search" type="text" placeholder="Search interviews (title / year)..." />
+    </div>
 
-      <div class="heroContent">
-        <h1 class="heroTitle">Michael Jackson</h1>
-        <p class="heroDesc">The King of Pop — Music Videos, Concerts, Movies & Legacy.</p>
+    <div id="grid" class="grid">
 
-        <div class="ctaRow">
-          <a class="btn btnPlay" href="musicvideos/index.html">▶ Music Videos</a>
-          <a class="btn btnInfo" href="concerts/index.html">🎤 Concerts</a>
-          <a class="btn btnInfo" href="interviews/index.html">🎙 Interviews</a>
-          <a class="btn btnInfo" href="Movies/index.html">🎬 Movies</a>
-        </div>
-
-        <div class="contactBox">
-          <a class="qrImage" href="https://wa.me/201018998174" target="_blank" rel="noopener" title="Open WhatsApp">
-            <img src="qr-whatsapp.png" alt="WhatsApp QR">
-          </a>
-
-          <div class="contactInfo">
-            <p class="contactTitle">Web Design</p>
-
-            <p class="contactText">
-              Call or scan the QR code<br>
-              <strong style="color:#fff;">+201018998174</strong><br>
-              Email: <a href="mailto:magedali1985@outlook.com">magedali1985@outlook.com</a>
-            </p>
-
-            <div class="contactActions">
-              <a class="contactBtn whatsapp" href="https://wa.me/201018998174" target="_blank" rel="noopener">🟢 WhatsApp</a>
-              <a class="contactBtn" href="tel:+201018998174">📞 Call</a>
-              <a class="contactBtn email" href="mailto:magedali1985@outlook.com">✉️ Email</a>
-            </div>
+      <!-- ✅ 14 Cards (عدّل اللينكات والصور براحتك) -->
+      <div class="card" data-title="michael jackson interview 1979">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/int-1979.jpg" alt="Michael Jackson Interview 1979">
+            <div class="badge"><span class="dot"></span> Watch</div>
           </div>
-        </div>
-
+          <div class="title">Michael Jackson Interview 1979</div>
+          <div class="meta">YouTube</div>
+        </a>
       </div>
+
+      <div class="card" data-title="ebony jet interview 1982">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/int-1982-ebony.jpg" alt="Ebony Jet Interview 1982">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Ebony Jet Interview 1982</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="entertainment tonight interview 1983">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/int-1983-et.jpg" alt="Entertainment Tonight Interview 1983">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Entertainment Tonight Interview 1983</div>
+          <div class="meta">Link</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="oprah winfrey interview 1993">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/int-1993-oprah.jpg" alt="Oprah Winfrey Interview 1993">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Oprah Winfrey Interview 1993</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- باقي الـ 10 -->
+      <div class="card" data-title="interview 5">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-05.jpg" alt="Interview 5"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 5</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 6">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-06.jpg" alt="Interview 6"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 6</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 7">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-07.jpg" alt="Interview 7"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 7</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 8">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-08.jpg" alt="Interview 8"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 8</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 9">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-09.jpg" alt="Interview 9"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 9</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 10">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-10.jpg" alt="Interview 10"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 10</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 11">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-11.jpg" alt="Interview 11"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 11</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 12">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-12.jpg" alt="Interview 12"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 12</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 13">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-13.jpg" alt="Interview 13"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 13</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <div class="card" data-title="interview 14">
+        <a href="PUT_YOUR_LINK_HERE" target="_blank" rel="noopener">
+          <div class="thumb"><img src="thumbs/int-14.jpg" alt="Interview 14"><div class="badge"><span class="dot"></span> Watch</div></div>
+          <div class="title">Interview 14</div><div class="meta">YouTube</div>
+        </a>
+      </div>
+
     </div>
 
-  </div>
+    <div class="footerWrap">
+      <a class="backBtn" href="../index.html">🏠 Back to Home</a>
+    </div>
 
-  <div class="footer">© MJ&G — Web Design by Maged Ali Hussein</div>
+  </main>
+</div>
+
+<script>
+  const q = document.getElementById("q");
+  q.addEventListener("input", ()=>{
+    const term = q.value.trim().toLowerCase();
+    document.querySelectorAll(".card").forEach(card=>{
+      const t = (card.getAttribute("data-title") || "").toLowerCase();
+      card.style.display = t.includes(term) ? "" : "none";
+    });
+  });
+</script>
+
 </body>
 </html>
