@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interviews | Michael Jackson</title>
+
+<style>
+  :root{
+    --red:#e50914;
+    --bg:#000;
+    --panel:#0b0b0b;
+    --panel2:#111;
+    --line:#1f1f1f;
+    --muted:#b3b3b3;
+    --sideW: 250px;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:#fff; font-family: Arial, sans-serif; }
+
+  .layout{ display:flex; min-height:100vh; }
+
+  /* Sidebar */
+  .sidebar{
+    width:var(--sideW);
+    background:#070707;
+    border-right:1px solid rgba(255,255,255,.08);
+    padding:18px 14px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+  .submenu{
+    margin:10px 0 14px;
+    padding:10px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    background:rgba(255,255,255,.03);
+  }
+  .sidebar a{
+    display:block;
+    padding:12px 12px;
+    border-radius:10px;
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    opacity:.9;
+    transition:.2s;
+  }
+  .submenu a{ padding:10px 10px; border-radius:10px; font-weight:700; }
+  .sidebar a:hover{ background:rgba(229,9,20,.18); transform:translateX(2px); opacity:1; }
+  .sidebar a.active{
+    background:rgba(229,9,20,.28);
+    border:1px solid rgba(229,9,20,.35);
+    opacity:1;
+  }
+
+  /* Content */
+  .content{ flex:1; padding:26px; }
+  .header{ max-width:1200px; margin:0 auto 12px; text-align:center; }
+  h1{ color:var(--red); margin:8px 0 6px; font-size:42px; letter-spacing:.5px; }
+  .sub{ color:var(--muted); margin:0 0 14px; font-size:14px; }
+
+  .topbar{
+    max-width:1200px;
+    margin:0 auto 18px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .search{
+    width:min(620px, 92vw);
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid #2a2a2a;
+    background:#0b0b0b;
+    color:#fff;
+    outline:none;
+    font-size:15px;
+    font-weight:700;
+  }
+  .count{ color:var(--muted); font-size:13px; font-weight:800; }
+
+  /* Grid */
+  .grid{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap:18px;
+  }
+
+  /* Card */
+  .card{
+    position:relative;
+    background:linear-gradient(180deg, var(--panel2), var(--panel));
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 0 18px rgba(255,255,255,.06);
+    transform:translateY(10px);
+    opacity:0;
+    animation:fadeUp .55s ease forwards;
+  }
+  @keyframes fadeUp{ to { opacity:1; transform:translateY(0); } }
+  .card a{ text-decoration:none; color:inherit; display:block; }
+  .thumb{ position:relative; overflow:hidden; background:#000; }
+  .thumb img{
+    width:100%;
+    height:165px;
+    object-fit:cover;
+    display:block;
+    transform:scale(1);
+    transition:transform .25s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px) scale(1.03);
+    box-shadow:0 0 45px rgba(229,9,20,.35);
+    border-color:rgba(229,9,20,.35);
+  }
+  .card:hover .thumb img{ transform:scale(1.08); }
+
+  .badge{
+    position:absolute;
+    left:12px;
+    bottom:12px;
+    padding:8px 12px;
+    border-radius:999px;
+    font-weight:800;
+    background:rgba(0,0,0,.65);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(4px);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .badge .dot{
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--red);
+    box-shadow:0 0 14px rgba(229,9,20,.8);
+  }
+  .title{
+    padding:14px 14px 6px;
+    font-weight:900;
+    text-align:center;
+    font-size:18px;
+    letter-spacing:.2px;
+  }
+  .meta{
+    padding:0 14px 14px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  /* Footer */
+  .footerWrap{
+    max-width:1200px;
+    margin:44px auto 0;
+    padding:26px 0 10px;
+    background:linear-gradient(0deg,#000 65%, transparent);
+  }
+  .footer{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .footer a{
+    display:inline-block;
+    padding:12px 20px;
+    border-radius:10px;
+    background:#2b2b2b;
+    color:#fff;
+    text-decoration:none;
+    font-weight:800;
+    transition:.2s;
+  }
+  .footer a:hover{ background:var(--red); transform:scale(1.03); }
+
+  /* Admin */
+  #adminBar{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    display:none;
+    gap:10px;
+    z-index:1000;
+  }
+  .adminBtn{
+    background:var(--red);
+    color:#fff;
+    border:none;
+    padding:14px 18px;
+    border-radius:12px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(229,9,20,.6);
+  }
+  .adminBtn.secondary{
+    background:#333;
+    box-shadow:0 0 12px rgba(255,255,255,.12);
+  }
+  .adminBtn:hover{ filter:brightness(.95); }
+
+  .delBadge{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:rgba(229,9,20,.95);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:8px 10px;
+    font-weight:900;
+    cursor:pointer;
+    display:none;
+    z-index:5;
+    box-shadow:0 0 14px rgba(229,9,20,.55);
+  }
+  body.admin .delBadge{ display:block; }
+
+  /* Upload Modal */
+  #uploadModal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:18px;
+  }
+  .modal-box{
+    background:#111;
+    padding:22px;
+    border-radius:14px;
+    width:min(380px, 92vw);
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 0 22px rgba(255,255,255,.10);
+  }
+  .modal-box h2{ margin:0 0 10px; color:#fff; }
+  .modal-box input{
+    width:100%;
+    margin:8px 0;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    background:#0b0b0b;
+    color:#fff;
+  }
+  .modal-box button{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border:none;
+    border-radius:8px;
+    font-weight:900;
+    cursor:pointer;
+  }
+  .modal-box .save{ background:var(--red); color:#fff; }
+  .modal-box .cancel{ background:#444; color:#fff; }
+
+  .hint{
+    margin:10px auto 0;
+    max-width:360px;
+    color:rgba(255,255,255,.65);
+    font-size:12px;
+    line-height:1.5;
+    text-align:left;
+  }
+
+  @media (max-width:900px){
+    .sidebar{ display:none; }
+    .content{ padding:18px; }
+  }
+  @media (max-width:520px){
+    h1{ font-size:34px; }
+    .thumb img{ height:155px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="submenu">
+      <a href="../albums.html">Photo Albums</a>
+      <a href="../musicvideos/index.html">Music Videos</a>
+      <a href="../concerts/index.html">Concerts</a>
+      <a href="../movies/index.html">Movies</a>
+      <a href="./index.html" class="active">Interviews</a>
+    </div>
+    <a href="../news.html">News</a>
+    <a href="../about.html">About</a>
+  </aside>
+
+  <main class="content">
+    <div class="header">
+      <h1>Michael Jackson Interviews</h1>
+      <p class="sub">Click any poster to watch</p>
+    </div>
+
+    <div class="topbar">
+      <input id="q" class="search" type="text" placeholder="Search interviews (title / year)..." />
+      <div id="count" class="count"></div>
+    </div>
+
+    <div id="grid" class="grid">
+
+      <!-- 1 -->
+      <div class="card" data-static="1" data-key="interview-1979" data-title="michael jackson interview 1979">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/O2hMPdexJRg?si=ZeLXRO-sKpMNvnpR" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-interview-1979.jpg" alt="Michael Jackson Interview 1979">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Michael Jackson Interview 1979</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 2 -->
+      <div class="card" data-static="1" data-key="ebony-1982" data-title="michael jackson ebony jet interview 1982">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/D2OtlNG_xw0?si=6XdQmYFO04bz7wAe" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-ebony-jet-interview-1982.jpg" alt="Ebony Jet Interview 1982">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Ebony Jet Interview 1982</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 3 -->
+      <div class="card" data-static="1" data-key="et-1983" data-title="entertainment tonight interview 1983">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="#" onclick="return false;">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-entertainment-tonight-et-interview-1983.jpg" alt="Entertainment Tonight Interview 1983">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Entertainment Tonight Interview 1983</div>
+          <div class="meta">Link</div>
+        </a>
+      </div>
+
+      <!-- 4 -->
+      <div class="card" data-static="1" data-key="oprah-1993" data-title="oprah winfrey interview 1993">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/jKlqIh4STt8?si=W0DiFGwCN2OlQmkg" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-oprah-winfrey-interview-1993.jpg" alt="Oprah Winfrey Interview 1993">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Oprah Winfrey Interview 1993</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 5 -->
+      <div class="card" data-static="1" data-key="diane-1995" data-title="diane sawyer 1995">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/L9SByuJW32Y?si=pcoRxddfPHQ_Fi-w" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-diane-sawyer-1995.jpg" alt="Diane Sawyer 1995">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Diane Sawyer 1995</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 6 -->
+      <div class="card" data-static="1" data-key="allegations-1996" data-title="addresses the allegations 1996">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/puLpPZQcNeY?si=6MCUiJXROpnYtMNh" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-addresses-the-allegations-1996.jpg" alt="Addresses The Allegations 1996">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Addresses The Allegations 1996</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 7 -->
+      <div class="card" data-static="1" data-key="interview-1997" data-title="interview 1997">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/W5kqp-c93gU?si=GdZKL3DOZV6tVU3D" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-interview-1997.jpg" alt="Interview 1997">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Interview 1997</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 8 -->
+      <div class="card" data-static="1" data-key="living-with" data-title="living with michael jackson">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/0oO3oeQJVsQ?si=KmY9CFhEv-KB_RCH" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/living-with-michael-jackson.jpg" alt="Living with Michael Jackson">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Living with Michael Jackson</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 9 -->
+      <div class="card" data-static="1" data-key="60-minutes" data-title="60 minutes ed bradley december">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/u2Kvoe_LcX8?si=PKwlf377JbPmtZAs" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-60-minutes-ed-bradley-december.jpg" alt="60 Minutes (Ed Bradley)">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">60 Minutes (Ed Bradley)</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 10 -->
+      <div class="card" data-static="1" data-key="private-home" data-title="private home movies">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/-L1R3qTolKA?si=K8IHRDIoiBcA1v4c" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-private-home-movies.jpg" alt="Private Home Movies">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Private Home Movies</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 11 -->
+      <div class="card" data-static="1" data-key="meant-to-see-2003" data-title="meant to see 2003">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/BUcUS2cIieA?si=sHsq9hb2sdpcmwhH" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-meant-to-see-2003.jpg" alt="Meant to See 2003">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Meant to See (2003)</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 12 -->
+      <div class="card" data-static="1" data-key="geraldo-2005" data-title="geraldo rivera 2005 legendado">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/XtBQtNNscYc?si=GULRhEsCZo7YljVd" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-entrevista-com-geraldo-rivera-2005-legendado.jpg" alt="Geraldo Rivera 2005">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Geraldo Rivera (2005)</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 13 -->
+      <div class="card" data-static="1" data-key="shooter-series" data-title="shooter series">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="https://youtu.be/pVk2xBI5q4M?si=d_2jIAMAVe_kAygc" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-shooter-series.jpg" alt="Shooter Series">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">Shooter Series</div>
+          <div class="meta">YouTube</div>
+        </a>
+      </div>
+
+      <!-- 14 -->
+      <div class="card" data-static="1" data-key="ebonyjet-full" data-title="ebonyjet full interview">
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="#" onclick="return false;">
+          <div class="thumb">
+            <img src="thumbs/michael-jackson-ebonyjet-full-interview.jpg" alt="EbonyJet Full Interview">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">EbonyJet Full Interview</div>
+          <div class="meta">Link</div>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footerWrap">
+      <div class="footer">
+        <a href="../index.html">🏠 Back to Home</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Admin Bar -->
+<div id="adminBar">
+  <button id="uploadBtn" class="adminBtn" type="button">➕ Upload</button>
+  <button id="exitAdminBtn" class="adminBtn secondary" type="button">✖ Exit</button>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal">
+  <div class="modal-box">
+    <h2>Upload New Interview</h2>
+    <input id="itemTitle" type="text" placeholder="Title" />
+    <input id="itemUrl" type="text" placeholder="YouTube link (or any link)" />
+    <input id="itemThumb" type="file" accept="image/*" />
+    <button class="save" id="saveBtn" type="button">Save</button>
+    <button class="cancel" id="cancelUploadBtn" type="button">Cancel</button>
+
+    <div class="hint">
+      <b>Note:</b> Upload بيضيف عندك في المتصفح فقط (localStorage).<br/>
+      علشان يبقى لكل الناس: لازم ترفع الصور/اللينكات كملفات ثابتة أو Backend.
+    </div>
+  </div>
+</div>
+
+<script>
+  const q = document.getElementById("q");
+  const count = document.getElementById("count");
+  const adminBar = document.getElementById("adminBar");
+  const uploadModal = document.getElementById("uploadModal");
+  const grid = document.getElementById("grid");
+
+  const LS_ADMIN_FLAG = "mj_admin_interviews";
+  const LS_DYNAMIC = "mj_interviews_dynamic";
+  const LS_HIDDEN = "mj_interviews_hidden_static";
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function getJSON(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch(e){ return fallback; }
+  }
+  function setJSON(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+  function enableAdmin(){
+    document.body.classList.add("admin");
+    adminBar.style.display = "flex";
+    localStorage.setItem(LS_ADMIN_FLAG, "1");
+  }
+  function disableAdmin(){
+    document.body.classList.remove("admin");
+    adminBar.style.display = "none";
+    localStorage.setItem(LS_ADMIN_FLAG, "0");
+    closeUpload();
+  }
+
+  document.addEventListener("keydown", (e)=>{
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==="m"){
+      const on = localStorage.getItem(LS_ADMIN_FLAG) === "1";
+      if(on) disableAdmin(); else enableAdmin();
+    }
+  });
+  if(localStorage.getItem(LS_ADMIN_FLAG) === "1") enableAdmin();
+
+  document.getElementById("exitAdminBtn").onclick = disableAdmin;
+
+  function updateCount(){
+    const cards = Array.from(document.querySelectorAll(".card"));
+    const shown = cards.filter(c => c.style.display !== "none").length;
+    const total = cards.length;
+    count.textContent = `${shown} / ${total}`;
+  }
+
+  function applyHiddenStatic(){
+    const hidden = new Set(getJSON(LS_HIDDEN, []));
+    document.querySelectorAll('.card[data-static="1"]').forEach(card=>{
+      const key = card.getAttribute("data-key");
+      if(hidden.has(key)) card.remove();
+    });
+  }
+
+  function wireDeletes(){
+    document.querySelectorAll(".card").forEach(card=>{
+      const del = card.querySelector(".delBadge");
+      if(!del) return;
+      del.onclick = (ev)=>{
+        ev.preventDefault(); ev.stopPropagation();
+        if(!confirm("Delete/Hide this item?")) return;
+
+        const isDynamic = card.dataset.dynamic === "1";
+        if(isDynamic){
+          const id = card.dataset.id;
+          const arr = getJSON(LS_DYNAMIC, []).filter(x => x.id !== id);
+          setJSON(LS_DYNAMIC, arr);
+          card.remove();
+        }else{
+          const key = card.getAttribute("data-key");
+          const hidden = new Set(getJSON(LS_HIDDEN, []));
+          hidden.add(key);
+          setJSON(LS_HIDDEN, Array.from(hidden));
+          card.remove();
+        }
+        updateCount();
+      };
+    });
+  }
+
+  function renderDynamic(){
+    const arr = getJSON(LS_DYNAMIC, []);
+    arr.forEach(item=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.dynamic = "1";
+      card.dataset.id = item.id;
+      card.dataset.title = (item.title || "").toLowerCase();
+
+      card.innerHTML = `
+        <button class="delBadge" type="button">🗑️ Delete</button>
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="${escapeHtml(item.thumbData)}" alt="${escapeHtml(item.title)}">
+            <div class="badge"><span class="dot"></span> Watch</div>
+          </div>
+          <div class="title">${escapeHtml(item.title)}</div>
+          <div class="meta">${escapeHtml(item.meta || "Link")}</div>
+        </a>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filter(){
+    const term = (q.value || "").trim().toLowerCase();
+    document.querySelectorAll(".card").forEach(card=>{
+      const t = (card.dataset.title || card.getAttribute("data-title") || "").toLowerCase();
+      card.style.display = t.includes(term) ? "" : "none";
+    });
+    updateCount();
+  }
+
+  q.addEventListener("input", filter);
+
+  // Upload
+  document.getElementById("uploadBtn").onclick = ()=> uploadModal.style.display = "flex";
+  document.getElementById("cancelUploadBtn").onclick = closeUpload;
+
+  function closeUpload(){
+    uploadModal.style.display = "none";
+    document.getElementById("itemTitle").value = "";
+    document.getElementById("itemUrl").value = "";
+    document.getElementById("itemThumb").value = "";
+  }
+
+  function isValidUrl(str){
+    try { new URL(str); return true; } catch(e){ return false; }
+  }
+
+  document.getElementById("saveBtn").onclick = ()=>{
+    const title = document.getElementById("itemTitle").value.trim();
+    const url = document.getElementById("itemUrl").value.trim();
+    const file = document.getElementById("itemThumb").files[0];
+
+    if(!title || !url || !file){
+      alert("Please add Title + Link + Poster Image");
+      return;
+    }
+    if(!isValidUrl(url)){
+      alert("Please paste a valid link (https://...)");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const item = { id:"d_" + Date.now(), title, url, meta:"Link", thumbData: reader.result };
+      const arr = getJSON(LS_DYNAMIC, []);
+      arr.push(item);
+      setJSON(LS_DYNAMIC, arr);
+      closeUpload();
+      location.reload();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Init
+  applyHiddenStatic();
+  renderDynamic();
+  wireDeletes();
+  updateCount();
+</script>
+
+</body>
+</html>
