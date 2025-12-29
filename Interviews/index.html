@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interviews | Michael Jackson</title>
+
+<style>
+  :root{
+    --red:#e50914;
+    --bg:#000;
+    --panel:#0b0b0b;
+    --panel2:#111;
+    --line:#1f1f1f;
+    --muted:#b3b3b3;
+
+    --sidebarW:270px;
+    --menuFont:16px;
+    --menuWeight:700;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:#fff; font-family: Arial, sans-serif; }
+
+  .layout{ display:flex; min-height:100vh; }
+
+  .sidebar{
+    width:var(--sidebarW);
+    background:linear-gradient(180deg,#050505,#0a0a0a);
+    border-right:1px solid var(--line);
+    padding:18px 14px;
+    position:sticky; top:0; height:100vh;
+  }
+
+  .submenu{
+    margin:0 0 18px; padding:12px;
+    border-radius:16px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow: 0 14px 40px rgba(0,0,0,.55);
+  }
+
+  .sidebar a{
+    display:block; color:#fff; text-decoration:none;
+    padding:10px 12px; border-radius:12px;
+    font-size:var(--menuFont);
+    font-weight:var(--menuWeight);
+    line-height:1.1;
+    opacity:.92; transition:.15s;
+  }
+  .submenu a{ margin:4px 0; }
+  .sidebar a:hover{ background:rgba(255,255,255,.06); opacity:1; }
+  .sidebar a.active{
+    background:rgba(229,9,20,.22);
+    border:1px solid rgba(229,9,20,.30);
+    box-shadow:0 0 18px rgba(229,9,20,.18);
+    opacity:1;
+  }
+  .spacer{ height:10px; }
+
+  .content{ flex:1; padding:26px; }
+  .header{ max-width:1200px; margin:0 auto 10px; text-align:center; }
+  h1{ color:var(--red); margin:8px 0 6px; font-size:42px; letter-spacing:.5px; }
+  .sub{ color:var(--muted); margin:0 0 14px; font-size:14px; }
+
+  .searchWrap{
+    max-width:1200px; margin:0 auto 18px;
+    display:flex; gap:10px; align-items:center; justify-content:center;
+    flex-wrap:wrap;
+  }
+  #search{
+    width:min(620px, 100%);
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, var(--panel2), var(--panel));
+    color:#fff; outline:none;
+    font-weight:700;
+  }
+  #search::placeholder{ color: var(--muted); font-weight:600; }
+  #search:focus{
+    border-color:rgba(229,9,20,.45);
+    box-shadow:0 0 0 4px rgba(229,9,20,.12);
+  }
+  .count{ color:var(--muted); font-size:13px; font-weight:700; }
+
+  .grid{
+    max-width:1200px; margin:0 auto;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap:18px;
+  }
+
+  .card{
+    position:relative;
+    background:linear-gradient(180deg, var(--panel2), var(--panel));
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 0 18px rgba(255,255,255,.06);
+    transform:translateY(10px);
+    opacity:0;
+    animation:fadeUp .55s ease forwards;
+  }
+  @keyframes fadeUp{ to { opacity:1; transform:translateY(0); } }
+  .card a{ text-decoration:none; color:inherit; display:block; }
+
+  .thumb{ position:relative; overflow:hidden; background:#000; }
+  .thumb img{
+    width:100%; height:165px; object-fit:cover; display:block;
+    transform:scale(1); transition:transform .25s ease;
+  }
+
+  .card:hover{
+    transform:translateY(-4px) scale(1.03);
+    box-shadow:0 0 45px rgba(229,9,20,.35);
+    border-color:rgba(229,9,20,.35);
+  }
+  .card:hover .thumb img{ transform:scale(1.08); }
+
+  .badge{
+    position:absolute; left:12px; bottom:12px;
+    padding:8px 12px; border-radius:999px;
+    font-weight:800;
+    background:rgba(0,0,0,.65);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(4px);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .badge .dot{
+    width:10px; height:10px; border-radius:50%;
+    background:var(--red);
+    box-shadow:0 0 14px rgba(229,9,20,.8);
+  }
+
+  .title{
+    padding:14px 14px 6px;
+    font-weight:900;
+    text-align:center;
+    font-size:18px;
+    letter-spacing:.2px;
+  }
+  .meta{
+    padding:0 14px 14px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  .delBadge{
+    position:absolute; top:10px; right:10px;
+    background:rgba(229,9,20,.95);
+    color:#fff; border:none;
+    border-radius:10px;
+    padding:8px 10px;
+    font-weight:800;
+    cursor:pointer;
+    display:none;
+    z-index:5;
+    box-shadow:0 0 14px rgba(229,9,20,.55);
+  }
+  body.admin .delBadge{ display:block; }
+
+  .footerWrap{
+    max-width:1200px;
+    margin:40px auto 0;
+    padding:24px 0 10px;
+    background:linear-gradient(0deg,#000 65%, transparent);
+  }
+  .footer{ display:flex; justify-content:center; }
+  .footer a{
+    display:inline-block;
+    padding:12px 20px;
+    border-radius:10px;
+    background:#2b2b2b;
+    color:#fff;
+    text-decoration:none;
+    font-weight:800;
+    transition:.2s;
+  }
+  .footer a:hover{ background:var(--red); transform:scale(1.03); }
+
+  #adminBar{
+    position:fixed; bottom:24px; right:24px;
+    display:none; gap:10px; z-index:1000;
+  }
+  .adminBtn{
+    background:var(--red);
+    color:#fff; border:none;
+    padding:14px 18px;
+    border-radius:12px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(229,9,20,.6);
+  }
+  .adminBtn.secondary{ background:#333; box-shadow:0 0 12px rgba(255,255,255,.12); }
+
+  #uploadModal{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.85);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    padding:18px;
+  }
+  .modal-box{
+    background:#111;
+    padding:22px;
+    border-radius:14px;
+    width:min(380px, 92vw);
+    text-align:center;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 0 22px rgba(255,255,255,.10);
+  }
+  .modal-box h2{ margin:0 0 10px; color:#fff; }
+  .modal-box input{
+    width:100%;
+    margin:8px 0;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    background:#0b0b0b;
+    color:#fff;
+  }
+  .modal-box button{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border:none;
+    border-radius:8px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  .modal-box .save{ background:var(--red); color:#fff; }
+  .modal-box .cancel{ background:#444; color:#fff; }
+
+  .hint{
+    margin:10px auto 0;
+    max-width:380px;
+    color:rgba(255,255,255,.65);
+    font-size:12px;
+    line-height:1.5;
+    text-align:left;
+  }
+
+  @media (max-width:860px){
+    .layout{ flex-direction:column; }
+    .sidebar{
+      width:100%; height:auto; position:relative;
+      border-right:none; border-bottom:1px solid var(--line);
+    }
+    .content{ padding:18px; }
+  }
+</style>
+</head>
+
+<body>
+<script>
+  const BASE = "/cautious-garbanzomj-site"; // ✅ ثابت
+</script>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="submenu">
+      <a href="#" onclick="location.href=BASE+'/albums.html';return false;">Photo Albums</a>
+      <a href="#" onclick="location.href=BASE+'/musicvideos/index.html';return false;">Music Videos</a>
+      <a href="#" onclick="location.href=BASE+'/concerts/index.html';return false;">Concerts</a>
+      <a href="#" onclick="location.href=BASE+'/Movies/index.html';return false;">Movies</a>
+      <a href="#" onclick="location.href=BASE+'/Interviews/index.html';return false;" class="active">Interviews</a>
+    </div>
+
+    <a href="#" onclick="location.href=BASE+'/news.html';return false;">News</a>
+    <div class="spacer"></div>
+    <a href="#" onclick="location.href=BASE+'/about.html';return false;">About</a>
+  </aside>
+
+  <main class="content">
+    <div class="header">
+      <h1>Michael Jackson Interviews</h1>
+      <p class="sub">Click any poster to watch</p>
+    </div>
+
+    <div class="searchWrap">
+      <input id="search" type="search" placeholder="Search interviews (title / year)..." autocomplete="off" />
+      <div id="count" class="count"></div>
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <div class="footerWrap">
+      <div class="footer">
+        <a href="#" onclick="location.href=BASE+'/index.html';return false;">🏠 Back to Home</a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="adminBar">
+  <button id="uploadBtn" class="adminBtn" type="button">➕ Upload</button>
+  <button id="exitAdminBtn" class="adminBtn secondary" type="button">✖ Exit</button>
+</div>
+
+<div id="uploadModal">
+  <div class="modal-box">
+    <h2>Upload New Interview</h2>
+    <input id="itemTitle" type="text" placeholder="Title" />
+    <input id="itemUrl" type="text" placeholder="YouTube link (or any link)" />
+    <input id="itemThumb" type="file" accept="image/*" />
+    <button class="save" id="saveBtn" type="button">Save</button>
+    <button class="cancel" id="cancelUploadBtn" type="button">Cancel</button>
+
+    <div class="hint">
+      <b>Note:</b> Upload بيضيف عندك في المتصفح فقط (localStorage).<br/>
+      علشان يبقى لكل الناس: ارفع الملفات على GitHub.
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY_PREFIX = "mj_interviews";
+  const LS_ITEMS         = KEY_PREFIX + "_items";
+  const LS_HIDDEN_STATIC = KEY_PREFIX + "_hidden_static";
+  const LS_ADMIN_FLAG    = "mj_admin";
+
+  const staticItems = [
+    { id:"s1",  title:"Michael Jackson Interview 1979", url:"https://youtu.be/O2hMPdexJRg?si=ZeLXRO-sKpMNvnpR", img:"michael-jackson-interview-1979.jpg", meta:"YouTube" },
+    { id:"s2",  title:"Ebony Jet Interview 1982", url:"https://youtu.be/D2OtlNG_xw0?si=6XdQmYFO04bz7wAe", img:"michael-jackson-ebony-jet-interview-1982.jpg", meta:"YouTube" },
+    { id:"s3",  title:"Entertainment Tonight Interview 1983", url:"#", img:"michael-jackson-entertainment-tonight-et-interview-1983.jpg", meta:"Link" },
+    { id:"s4",  title:"Oprah Winfrey Interview 1993", url:"https://youtu.be/jKlqIh4STt8?si=W0DiFGwCN2OlQmkg", img:"michael-jackson-oprah-winfrey-interview-1993.jpg", meta:"YouTube" },
+    { id:"s5",  title:"Diane Sawyer 1995", url:"https://youtu.be/L9SByuJW32Y?si=pcoRxddfPHQ_Fi-w", img:"micheal-jackson-diane-sawyer-1995.jpg", meta:"YouTube" },
+    { id:"s6",  title:"Interview 1997", url:"https://youtu.be/W5kqp-c93gU?si=GdZKL3DOZV6tVU3D", img:"michael-jackson-interview-1997.jpg", meta:"YouTube" },
+    { id:"s7",  title:"Addresses the Allegations 1996", url:"https://youtu.be/puLpPZQcNeY?si=6MCUiJXROpnYtMNh", img:"michael-jackson-addresses-the-allegations-1996.jpg", meta:"YouTube" },
+    { id:"s8",  title:"Living with Michael Jackson", url:"https://youtu.be/0oO3oeQJVsQ?si=KmY9CFhEv-KB_RCH", img:"living-with-michael-jackson.jpg", meta:"YouTube" },
+
+    { id:"s9",  title:"60 Minutes (Ed Bradley)", url:"https://youtu.be/u2Kvoe_LcX8?si=PKwlf377JbPmtZAs", img:"michael-Jackson-60-minutes-ed-bradley-december.jpg", meta:"YouTube" },
+    { id:"s11", title:"Meant to See 2003", url:"https://youtu.be/BUcUS2cIieA?si=sHsq9hb2sdpcmwhH", img:"michael-jackson-meant-to-see-2003.jpg", meta:"YouTube" },
+    { id:"s14", title:"EbonyJet Full Interview 1987", url:"#", img:"michael-jackson-ebonyjet-full-interview-1987.jpg", meta:"Link" },
+
+    { id:"s10", title:"Private Home Movies", url:"https://youtu.be/-L1R3qTolKA?si=K8IHRDIoiBcA1v4c", img:"michael-jackson-private-home-movies.jpg", meta:"YouTube" },
+    { id:"s12", title:"Geraldo Rivera 2005 (Legendado)", url:"https://youtu.be/XtBQtNNscYc?si=GULRhEsCZo7YljVd", img:"michael-jackson-entrevista-com-geraldo-rivera-2005-legendado.jpg", meta:"YouTube" },
+    { id:"s13", title:"Shooter Series", url:"https://youtu.be/pVk2xBI5q4M?si=d_2jIAMAVe_kAygc", img:"michael-jackson-shooter-series.jpg", meta:"YouTube" }
+  ];
+
+  const grid = document.getElementById("grid");
+  const search = document.getElementById("search");
+  const count = document.getElementById("count");
+  const adminBar = document.getElementById("adminBar");
+  const uploadModal = document.getElementById("uploadModal");
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function normalizeUrl(u){
+    const v = (u || "").trim();
+    if(!v) return "";
+    if(v.startsWith("http://") || v.startsWith("https://")) return v;
+    if(!v.includes(" ") && v.length >= 8) return "https://www.youtube.com/watch?v=" + encodeURIComponent(v);
+    return v;
+  }
+
+  function getJSON(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch(e){ return fallback; }
+  }
+  function setJSON(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+  function getDynamic(){ return getJSON(LS_ITEMS, []); }
+  function setDynamic(arr){ setJSON(LS_ITEMS, arr); }
+
+  function getHiddenStatic(){ return new Set(getJSON(LS_HIDDEN_STATIC, [])); }
+  function setHiddenStatic(setObj){ setJSON(LS_HIDDEN_STATIC, Array.from(setObj)); }
+
+  function enableAdmin(){
+    document.body.classList.add("admin");
+    adminBar.style.display = "flex";
+    localStorage.setItem(LS_ADMIN_FLAG, "1");
+  }
+  function disableAdmin(){
+    document.body.classList.remove("admin");
+    adminBar.style.display = "none";
+    localStorage.setItem(LS_ADMIN_FLAG, "0");
+    closeUpload();
+  }
+
+  document.addEventListener("keydown", (e)=>{
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==="m"){
+      const on = localStorage.getItem(LS_ADMIN_FLAG) === "1";
+      if(on) disableAdmin(); else enableAdmin();
+    }
+  });
+  if(localStorage.getItem(LS_ADMIN_FLAG) === "1") enableAdmin();
+  document.getElementById("exitAdminBtn").onclick = disableAdmin;
+
+  function makeCard(item, isDynamic){
+    const meta = item.meta || "Link";
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const safeUrl = item.url && item.url !== "#" ? item.url : "#";
+    const targetAttr = safeUrl === "#" ? "" : `target="_blank" rel="noopener"`;
+
+    card.innerHTML = `
+      <button class="delBadge" type="button">🗑️ Delete</button>
+      <a href="${escapeHtml(safeUrl)}" ${targetAttr}>
+        <div class="thumb">
+          <img alt="${escapeHtml(item.title)}">
+          <div class="badge"><span class="dot"></span> Watch</div>
+        </div>
+        <div class="title">${escapeHtml(item.title)}</div>
+        <div class="meta">${escapeHtml(meta)}</div>
+      </a>
+    `;
+
+    const imgEl = card.querySelector("img");
+    imgEl.src = item.thumbData ? item.thumbData : ("thumbs/" + item.img);
+
+    const delBtn = card.querySelector(".delBadge");
+    delBtn.addEventListener("click", (ev)=>{
+      ev.preventDefault(); ev.stopPropagation();
+      if(!confirm("Delete this item?")) return;
+
+      if(isDynamic){
+        const arr = getDynamic().filter(x => x.id !== item.id);
+        setDynamic(arr);
+        card.remove();
+      }else{
+        const hidden = getHiddenStatic();
+        hidden.add(item.id);
+        setHiddenStatic(hidden);
+        card.remove();
+      }
+      updateCount();
+    });
+
+    return card;
+  }
+
+  function getAllItemsFiltered(){
+    const hidden = getHiddenStatic();
+    const stat = staticItems.filter(s => !hidden.has(s.id));
+    const dyn  = getDynamic();
+    const q = (search.value || "").trim().toLowerCase();
+    const all = [...stat, ...dyn];
+    if(!q) return all;
+    return all.filter(x => (`${x.title} ${x.meta||""}`).toLowerCase().includes(q));
+  }
+
+  function render(){
+    grid.innerHTML = "";
+    const list = getAllItemsFiltered();
+    list.forEach((item, i)=>{
+      const isDynamic = String(item.id || "").startsWith("d_");
+      const card = makeCard(item, isDynamic);
+      card.style.animationDelay = (0.04 + i*0.04) + "s";
+      grid.appendChild(card);
+    });
+    updateCount();
+  }
+
+  function updateCount(){
+    const hidden = getHiddenStatic();
+    const total = staticItems.filter(s => !hidden.has(s.id)).length + getDynamic().length;
+    const shown = getAllItemsFiltered().length;
+    count.textContent = `${shown} / ${total}`;
+  }
+
+  search.addEventListener("input", render);
+
+  document.getElementById("uploadBtn").onclick = ()=>{ uploadModal.style.display="flex"; };
+  document.getElementById("cancelUploadBtn").onclick = closeUpload;
+
+  function closeUpload(){
+    uploadModal.style.display="none";
+    document.getElementById("itemTitle").value = "";
+    document.getElementById("itemUrl").value = "";
+    document.getElementById("itemThumb").value = "";
+  }
+
+  document.getElementById("saveBtn").onclick = ()=>{
+    const title = document.getElementById("itemTitle").value.trim();
+    const urlRaw = document.getElementById("itemUrl").value.trim();
+    const file = document.getElementById("itemThumb").files[0];
+
+    if(!title || !urlRaw || !file){
+      alert("Please add Title + Link + Thumbnail");
+      return;
+    }
+
+    const url = normalizeUrl(urlRaw);
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const item = {
+        id: "d_" + Date.now(),
+        title,
+        url,
+        meta: "Link",
+        thumbData: reader.result
+      };
+      const arr = getDynamic();
+      arr.push(item);
+      setDynamic(arr);
+      closeUpload();
+      render();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  render();
+</script>
+
+</body>
+</html>
