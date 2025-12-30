@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music Videos</title>
+
+  <style>
+    :root{
+      --red:#e50914;
+      --bg:#000;
+      --panel:#0b0b0b;
+      --line:#1f1f1f;
+      --muted:#b3b3b3;
+      --card: rgba(18,18,18,.72);
+    }
+    *{ box-sizing:border-box; }
+    html, body{
+      margin:0;
+      background:var(--bg);
+      color:#fff;
+      font-family: Arial, sans-serif;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-35%;
+      background:
+        radial-gradient(closest-side, rgba(229,9,20,.18), transparent 62%),
+        radial-gradient(closest-side, rgba(229,9,20,.10), transparent 62%);
+      filter: blur(34px);
+      opacity:.85;
+      animation: floatGlow 10s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:-2;
+    }
+    @keyframes floatGlow{
+      0% { transform: translate(-4%, -2%) scale(1); }
+      100%{ transform: translate(4%, 2%) scale(1.06); }
+    }
+
+    .main{ padding:22px 22px 14px; max-width:1200px; margin:0 auto; }
+
+    h1{
+      margin:8px 0 10px;
+      font-size:42px;
+      color:#fff;
+      font-weight:900;
+    }
+    .sub{
+      margin:0 0 16px;
+      color:rgba(255,255,255,.80);
+      font-weight:700;
+    }
+
+    .searchRow{
+      margin:12px 0 12px;
+      display:flex;
+      justify-content:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .search{
+      width:min(560px, 100%);
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      outline:none;
+      font-size:15px;
+    }
+
+    /* Admin Bar */
+    #adminBar{
+      display:none;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin:10px 0 16px;
+    }
+    .adminBtn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.10);
+      color:#fff; font-weight:900;
+      cursor:pointer; transition:.2s;
+      user-select:none;
+    }
+    .adminBtn.primary{
+      background:rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.35);
+    }
+    .adminBtn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.25);
+    }
+    .hint{
+      font-size:12px;
+      color:rgba(255,255,255,.55);
+      font-weight:800;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap:16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 0 22px rgba(255,255,255,.06);
+      transition:.2s;
+      position:relative;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      border-color:rgba(229,9,20,.22);
+      box-shadow:0 0 26px rgba(229,9,20,.12);
+    }
+
+    .thumbLink{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+    }
+    .card img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
+
+    .title{
+      padding:12px 12px 0;
+      font-weight:900;
+      color:#fff;
+      text-align:center;
+      font-size:15px;
+      line-height:1.35;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .actions{
+      padding:12px 12px 16px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:900;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      color:#fff;
+      transition:.2s;
+    }
+    .btn.primary{
+      background:rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.35);
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.25);
+    }
+
+    /* Delete button on card (admin only) */
+    .delBtn{
+      position:absolute;
+      top:10px;
+      right:10px;
+      display:none;
+      padding:8px 10px;
+      border-radius:10px;
+      font-weight:900;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45);
+      color:#fff;
+      transition:.2s;
+    }
+    .delBtn:hover{
+      border-color:rgba(229,9,20,.35);
+      box-shadow:0 0 16px rgba(229,9,20,.18);
+      transform: translateY(-1px);
+    }
+    body.admin .delBtn{ display:inline-flex; }
+
+    /* Bottom Home */
+    .bottomNav{
+      margin:18px 0 6px;
+      display:flex;
+      justify-content:center;
+    }
+    .backBtn{
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      padding:10px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      transition:.2s;
+      white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .backBtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(229,9,20,.25);
+      box-shadow:0 0 18px rgba(229,9,20,.18);
+    }
+
+    .footer{
+      margin-top:14px;
+      padding:10px 12px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* Modal */
+    #modal{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.65);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:50;
+    }
+    #modal.open{ display:flex; }
+    .modalCard{
+      width:min(860px, 100%);
+      background:rgba(12,12,12,.92);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 0 40px rgba(0,0,0,.65);
+    }
+    .modalHead{
+      padding:14px 16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .modalHead h3{ margin:0; font-size:16px; font-weight:900; }
+    .xbtn{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .modalBody{ padding:16px; }
+    .formGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    label{ font-size:12px; font-weight:900; color:rgba(255,255,255,.75); }
+    input{
+      width:100%;
+      margin-top:6px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      outline:none;
+    }
+    .note{
+      grid-column:1/-1;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:rgba(255,255,255,.70);
+      font-size:12px;
+      line-height:1.5;
+    }
+    .modalActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      padding:14px 16px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .saveBtn{
+      background:rgba(229,9,20,.18);
+      border-color:rgba(229,9,20,.35);
+    }
+
+    @media (max-width: 900px){
+      .main{ padding:18px; }
+      h1{ font-size:34px; }
+      .formGrid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="main">
+
+    <h1>Michael Jackson Music Videos</h1>
+    <p class="sub">Search and open any video on YouTube.</p>
+
+    <div class="searchRow">
+      <input id="q" class="search" type="text" placeholder="Search videos..." />
+    </div>
+
+    <!-- Admin controls -->
+    <div id="adminBar">
+      <button class="adminBtn primary" id="uploadBtn" type="button">＋ Upload</button>
+      <button class="adminBtn" id="clearSavedBtn" type="button">🗑 Delete Saved</button>
+      <span class="hint">Admin mode: Ctrl + Shift + M (or ?admin=1)</span>
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <!-- Home button at bottom -->
+    <div class="bottomNav">
+      <a class="backBtn" href="../index.html">🏠 Back to Home</a>
+    </div>
+
+    <footer class="footer">
+      <span>© MJ&G — All rights reserved</span>
+      <span>Designed by Maged Ali Hussein</span>
+    </footer>
+  </main>
+
+  <!-- Upload Modal -->
+  <div id="modal">
+    <div class="modalCard">
+      <div class="modalHead">
+        <h3>Upload New Video</h3>
+        <button class="xbtn" id="closeModal" type="button">✕</button>
+      </div>
+
+      <form id="videoForm">
+        <div class="modalBody">
+          <div class="formGrid">
+            <div>
+              <label>Title</label>
+              <input name="title" placeholder="Video title..." required />
+            </div>
+            <div>
+              <label>YouTube Link (or ID)</label>
+              <input name="youtube" placeholder="https://www.youtube.com/watch?v=XXXX" required />
+            </div>
+
+            <div style="grid-column:1/-1;">
+              <label>Thumbnail Image (from your PC)</label>
+              <input name="thumb" type="file" accept="image/*" required />
+            </div>
+
+            <div class="note">
+              ✅ الصورة هتتخزن في المتصفح (localStorage).<br>
+              ✅ لو عايزها تبقى ثابتة على GitHub لازم ترفعها في فولدر <b>thumbs</b> وتستخدم نفس نظام الصور القديم.
+            </div>
+          </div>
+        </div>
+
+        <div class="modalActions">
+          <button type="button" class="adminBtn" id="cancelBtn">Cancel</button>
+          <button type="submit" class="adminBtn saveBtn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ====== Seed videos (your original list) ======
+    const SEED = [
+      { title:"Don't Stop Til You Get Enough", id:"yURRmWtbTbo", img:"dont-stop-til-you-get-enough.jpg" },
+      { title:"Rock With You", id:"5X-Mrc2l1d0", img:"rock-with-you.jpg" },
+      { title:"She's Out of My Life", id:"6DQJPL9Yuq0", img:"shes-out-of-my-life.jpg" },
+      { title:"Thriller", id:"sOnqjkJTMaA", img:"thriller.jpg" },
+      { title:"Beat It", id:"oRdxUFDoQe0", img:"beat-it.jpg" },
+      { title:"Billie Jean", id:"Zi_XLOBDo_Y", img:"billie-jean.jpg" },
+      { title:"Bad", id:"dsUXAEzaC3Q", img:"bad.jpg" },
+      { title:"Dirty Diana", id:"yUi_S6YWjZw", img:"dirty-diana.jpg" },
+      { title:"Liberian Girl", id:"f3V-7DEAgdc", img:"liberian-girl.jpg" },
+      { title:"Man in the Mirror", id:"PivWY9wn5ps", img:"man-in-the-mirror.jpg" },
+      { title:"Smooth Criminal", id:"q8w1d01Y2vY", img:"smooth-criminal.jpg" },
+      { title:"Speed Demon", id:"l039y9FaIjc", img:"speed-demon.jpg" },
+      { title:"The Way You Make Me Feel", id:"HzZ_urpj4As", img:"the-way-you-make-me-feel.jpg" },
+      { title:"Black or White", id:"F2AitTPI5U0", img:"black-or-white.jpg" },
+      { title:"Give In to Me", id:"LJ7qXHjxj_0", img:"give-in-to-me.jpg" },
+      { title:"Gone Too Soon", id:"IcNamirwTaY", img:"gone-too-soon.jpg" },
+      { title:"Heal the World", id:"BWf-eARnf6U", img:"heal-the-world.png" },
+      { title:"In the Closet", id:"4qLY0vbrT8Q", img:"in-the-closet.jpg" },
+      { title:"Who Is It", id:"PfrV_6yWbEg", img:"who-is-it.jpg" },
+      { title:"Jam", id:"JbHI1yI1Ndk", img:"jam.jpg" },
+      { title:"Remember the Time", id:"LeiFF0gvqcc", img:"remember-the-time.jpg" },
+      { title:"Will You Be There", id:"jQY_QL_wvQU", img:"will-you-be-there.jpg" },
+      { title:"They Don't Care About Us", id:"QNJL6nfu__Q", img:"they-dont-care-about-us.jpg" },
+      { title:"They Don't Care About Us 2", id:"t1pqi8vjTLY", img:"they-dont-care-about-us2.jpg" },
+      { title:"Childhood", id:"puQEcN_iI9o", img:"childhood.jpg" },
+      { title:"Earth Song", id:"XAi3VTSdTxU", img:"earth-song.jpg" },
+      { title:"Scream", id:"0P4A1K4lXDo", img:"scream.jpg" },
+      { title:"Stranger in Moscow", id:"pEEMi2j6lYE", img:"stranger-in-moscow.jpg" },
+      { title:"You Are Not Alone", id:"pAyKJAtDNCw", img:"you-are-not-alone.jpg" },
+      { title:"Blood on the Dance Floor", id:"c3_NntYhzV4", img:"blood-on-the-dance-floor.jpg" },
+      { title:"Ghosts", id:"Xh9Cp4rd7mI", img:"ghosts.jpg" },
+      { title:"You Rock My World", id:"g4tpuu-Up90", img:"you-rock-my-world.jpg" },
+      { title:"Cry", id:"mj3MfUR35CM", img:"cry.jpg" },
+      { title:"One More Chance", id:"-owpIWQMd80", img:"one-more-chance.jpg" }
+    ];
+
+    // ====== Storage helpers ======
+    const STORAGE_KEY = "MJG_VIDEOS_SAVED_v1";
+    function loadSaved(){
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+      catch { return []; }
+    }
+    function saveSaved(list){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    // ====== YouTube ID parser ======
+    function getYouTubeId(input){
+      const s = (input || "").trim();
+      if(!s) return "";
+      // If user pasted just ID
+      if(/^[a-zA-Z0-9_-]{6,}$/.test(s) && !s.includes("http")) return s;
+
+      // Common patterns
+      const patterns = [
+        /v=([a-zA-Z0-9_-]{6,})/i,
+        /youtu\.be\/([a-zA-Z0-9_-]{6,})/i,
+        /youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/i,
+        /youtube\.com\/embed\/([a-zA-Z0-9_-]{6,})/i
+      ];
+      for(const p of patterns){
+        const m = s.match(p);
+        if(m && m[1]) return m[1];
+      }
+      return "";
+    }
+
+    // ====== Admin mode ======
+    const adminBar = document.getElementById("adminBar");
+    let isAdmin = false;
+
+    function setAdmin(on){
+      isAdmin = !!on;
+      document.body.classList.toggle("admin", isAdmin);
+      adminBar.style.display = isAdmin ? "flex" : "none";
+      render(currentList());
+    }
+
+    // Enable admin by query ?admin=1
+    const params = new URLSearchParams(location.search);
+    if(params.get("admin") === "1") setAdmin(true);
+
+    // Toggle admin with Ctrl+Shift+M
+    window.addEventListener("keydown", (e) => {
+      if(e.ctrlKey && e.shiftKey && (e.key === "M" || e.key === "m")){
+        e.preventDefault();
+        setAdmin(!isAdmin);
+      }
+    });
+
+    // ====== Render ======
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+
+    function currentList(){
+      const saved = loadSaved(); // {title,id,thumbDataUrl, saved:true}
+      const merged = [
+        ...SEED.map(v => ({...v, _src:"seed"})),
+        ...saved.map(v => ({...v, _src:"saved"}))
+      ];
+      return merged;
+    }
+
+    function render(list){
+      grid.innerHTML = "";
+      list.forEach((v, idx) => {
+        const youtube = `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const imgSrc = (v._src === "saved")
+          ? v.thumbDataUrl
+          : `thumbs/${v.img}`;
+
+        card.innerHTML = `
+          <button class="delBtn" type="button" title="Delete">🗑</button>
+
+          <a class="thumbLink" href="${youtube}" target="_blank" rel="noopener">
+            <img src="${imgSrc}" alt="${v.title}">
+            <div class="title">${v.title}</div>
+          </a>
+
+          <div class="actions">
+            <a class="btn primary" href="${youtube}" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        `;
+
+        // Delete (admin only) — only deletes SAVED items
+        const delBtn = card.querySelector(".delBtn");
+        delBtn.addEventListener("click", () => {
+          if(!isAdmin) return;
+          if(v._src !== "saved"){
+            alert("This item is from the default list. Only uploaded items can be deleted.");
+            return;
+          }
+          const saved = loadSaved();
+          const newSaved = saved.filter(x => !(x.id === v.id && x.title === v.title));
+          saveSaved(newSaved);
+          render(filterList(q.value));
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function filterList(term){
+      const t = (term || "").trim().toLowerCase();
+      const all = currentList();
+      if(!t) return all;
+      return all.filter(v => (v.title || "").toLowerCase().includes(t));
+    }
+
+    render(currentList());
+
+    q.addEventListener("input", () => {
+      render(filterList(q.value));
+    });
+
+    // ====== Upload modal ======
+    const modal = document.getElementById("modal");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const closeModal = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const videoForm = document.getElementById("videoForm");
+    const clearSavedBtn = document.getElementById("clearSavedBtn");
+
+    function openModal(){ modal.classList.add("open"); }
+    function hideModal(){ modal.classList.remove("open"); videoForm.reset(); }
+
+    uploadBtn?.addEventListener("click", () => openModal());
+    closeModal.addEventListener("click", hideModal);
+    cancelBtn.addEventListener("click", hideModal);
+    modal.addEventListener("click", (e) => { if(e.target === modal) hideModal(); });
+
+    videoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if(!isAdmin) return;
+
+      const fd = new FormData(videoForm);
+      const title = String(fd.get("title") || "").trim();
+      const youtubeInput = String(fd.get("youtube") || "").trim();
+      const file = fd.get("thumb");
+
+      const id = getYouTubeId(youtubeInput);
+      if(!title){ alert("Title is required."); return; }
+      if(!id){ alert("Please paste a valid YouTube link or ID."); return; }
+      if(!(file instanceof File) || !file.size){ alert("Please choose an image."); return; }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const thumbDataUrl = String(reader.result || "");
+        const saved = loadSaved();
+
+        // prevent duplicates
+        const exists = saved.some(x => x.id === id);
+        if(exists){
+          alert("This YouTube video already exists in saved items.");
+          return;
+        }
+
+        saved.push({ title, id, thumbDataUrl });
+        saveSaved(saved);
+        hideModal();
+        render(filterList(q.value));
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Delete Saved (all)
+    clearSavedBtn?.addEventListener("click", () => {
+      if(!isAdmin) return;
+      if(confirm("Delete ALL uploaded videos?")){
+        localStorage.removeItem(STORAGE_KEY);
+        render(filterList(q.value));
+      }
+    });
+  </script>
+</body>
+</html>
