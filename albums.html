@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MJ Albums</title>
+
+  <style>
+    body{
+      margin:0;
+      padding:20px;
+      background:#000;
+      color:#fff;
+      font-family: Arial, sans-serif;
+      text-align:center;
+    }
+
+    h1{
+      color:#e50914;
+      margin:20px 0 18px;
+      font-size:38px;
+      text-shadow:0 0 10px rgba(255,0,0,.55);
+    }
+
+    .albums{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap:16px;
+    }
+
+    .card{
+      position:relative;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      overflow:hidden;
+      text-decoration:none;
+      color:#fff;
+      transition:.2s;
+      box-shadow:0 0 18px rgba(255,255,255,.08);
+      display:block;
+    }
+    .card:hover{
+      transform:scale(1.02);
+      box-shadow:0 0 22px rgba(229,9,20,.35);
+      border-color:rgba(229,9,20,.35);
+    }
+
+    .cover{
+      width:100%;
+      aspect-ratio: 1/1;
+      object-fit:cover;
+      display:block;
+      background:#111;
+    }
+
+    .name{
+      padding:12px 10px;
+      font-weight:700;
+      font-size:18px;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:22px;
+      padding:12px 22px;
+      border-radius:10px;
+      background:#e50914;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+    }
+    .back:hover{ background:#b20710; }
+  </style>
+</head>
+
+<body>
+
+  <h1>Michael Jackson Albums</h1>
+
+  <div class="albums">
+
+    <a class="card" href="Off-The-Wall/index.html">
+      <img class="cover" src="Off-The-Wall/cover.jpg" alt="Off The Wall">
+      <div class="name">Off The Wall</div>
+    </a>
+
+    <a class="card" href="Thriller/index.html">
+      <img class="cover" src="Thriller/cover.jpg" alt="Thriller">
+      <div class="name">Thriller</div>
+    </a>
+
+    <a class="card" href="bad/index.html">
+      <img class="cover" src="bad/cover.jpg" alt="Bad">
+      <div class="name">Bad</div>
+    </a>
+
+    <a class="card" href="Dangerous/index.html">
+      <img class="cover" src="Dangerous/cover.jpg" alt="Dangerous">
+      <div class="name">Dangerous</div>
+    </a>
+
+    <a class="card" href="History/index.html">
+      <img class="cover" src="History/cover.jpg" alt="HIStory">
+      <div class="name">HIStory</div>
+    </a>
+
+    <a class="card" href="Blood-On-The-Dance-Floor/index.html">
+      <img class="cover" src="Blood-On-The-Dance-Floor/cover.jpg" alt="Blood On The Dance Floor">
+      <div class="name">Blood On The Dance Floor</div>
+    </a>
+
+    <a class="card" href="Invincible/index.html">
+      <img class="cover" src="Invincible/cover.jpg" alt="Invincible">
+      <div class="name">Invincible</div>
+    </a>
+
+    <a class="card" href="This-Is-It/index.html">
+      <img class="cover" src="This-Is-It/cover.jpg" alt="This Is It">
+      <div class="name">This Is It</div>
+    </a>
+
+    <a class="card" href="Micheal2010/index.html">
+      <img class="cover" src="Micheal2010/cover.jpg" alt="Michael (2010)">
+      <div class="name">Michael (2010)</div>
+    </a>
+
+    <a class="card" href="Xscape/index.html">
+      <img class="cover" src="Xscape/cover.jpg" alt="Xscape">
+      <div class="name">Xscape</div>
+    </a>
+
+    <!-- ✅ Bad 25 LAST -->
+    <a class="card" href="bad-25th-anniversary-deluxe-edition/index.html">
+      <img class="cover" src="bad-25th-anniversary-deluxe-edition/cover.jpg" alt="Bad (25th Anniversary)">
+      <div class="name">Bad (25th Anniversary)</div>
+    </a>
+
+  </div>
+
+  <a class="back" href="index.html">🏠 Back to Home</a>
+
+</body>
+</html>
