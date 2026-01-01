@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Michael Jackson - Bad (25th Anniversary)</title>
+
+<style>
+  body{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    padding:20px;
+    margin:0;
+  }
+
+  h1{
+    color:#e50914;
+    font-size:38px;
+    margin:0 0 10px;
+  }
+
+  .sub{
+    color:#b3b3b3;
+    margin:0 0 22px;
+    font-size:14px;
+    letter-spacing:.2px;
+  }
+
+  .cover{
+    max-width:920px;
+    margin:0 auto 22px;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 0 22px rgba(229,9,20,.18);
+    background:rgba(255,255,255,.03);
+  }
+  .cover img{ width:100%; display:block; }
+
+  .gallery{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+  }
+
+  .gallery img{
+    width:100%;
+    border-radius:12px;
+    box-shadow:0 0 18px rgba(255,255,255,.15);
+    display:block;
+    cursor:zoom-in;
+    transition:.25s;
+  }
+
+  .gallery img:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 35px rgba(229,9,20,.5);
+  }
+
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.95);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:16px;
+  }
+  .lightbox.open{ display:flex; }
+
+  .lightbox .wrap{
+    position:relative;
+    width:100%;
+    max-width:1200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .lightbox img{
+    max-width:92%;
+    max-height:92vh;
+    border-radius:14px;
+    box-shadow:0 0 55px rgba(229,9,20,.6);
+    animation:zoom .25s ease;
+  }
+
+  @keyframes zoom{
+    from{ transform:scale(.85); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+  }
+
+  .close{
+    position:absolute;
+    top:-6px;
+    right:8px;
+    font-size:38px;
+    cursor:pointer;
+    color:#fff;
+    font-weight:bold;
+    line-height:1;
+    user-select:none;
+    padding:10px 12px;
+  }
+
+  .footer{
+    margin-top:45px;
+    padding:25px 10px;
+    background:#1a1a1a;
+    border-top:1px solid #333;
+  }
+
+  .footer a{
+    display:inline-block;
+    margin:8px;
+    padding:12px 26px;
+    background:#2e2e2e;
+    color:#fff;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+    transition:0.3s;
+  }
+  .footer a:hover{ background:#e50914; transform:scale(1.05); }
+</style>
+</head>
+
+<body>
+
+<h1>Bad — Michael Jackson</h1>
+<p class="sub">25th Anniversary Deluxe Edition</p>
+
+<div class="cover">
+  <img src="cover.jpg" alt="Bad 25th Anniversary Cover">
+</div>
+
+<div class="gallery">
+  <img src="mj2000-1.jpg" alt="Bad 25 - 1">
+  <img src="mj2000-2.jpg" alt="Bad 25 - 2">
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="wrap">
+    <span class="close" id="close" aria-label="Close">&times;</span>
+    <img id="lightbox-img" alt="Preview">
+  </div>
+</div>
+
+<div class="footer">
+  <a href="../albums.html">⬅ Back to albums</a>
+  <a href="../index.html">🏠 Back to Home</a>
+</div>
+
+<script>
+  const images = document.querySelectorAll('.gallery img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('close');
+
+  images.forEach(img=>{
+    img.addEventListener('click',()=>{
+      lightboxImg.src = img.src;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+    });
+  });
+
+  const close = ()=>{
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+    lightboxImg.src = "";
+  };
+
+  closeBtn.onclick = close;
+  lightbox.onclick = e => { if(e.target === lightbox) close(); };
+
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape') close();
+  });
+</script>
+
+</body>
+</html>
